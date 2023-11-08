@@ -5,4 +5,4 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-svgo',
   ],
-});
+})
