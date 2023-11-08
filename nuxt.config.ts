@@ -4,5 +4,6 @@ export default defineNuxtConfig({
   modules: [
     '@vueuse/nuxt',
     'nuxt-svgo',
+    '@pinia/nuxt',
   ],
 })
