@@ -5,5 +5,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-svgo',
     '@pinia/nuxt',
+    '@nuxtjs/google-fonts',
   ],
 })
