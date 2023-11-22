@@ -1,0 +1,41 @@
+%heading {
+  color: var(--text-primary-color);
+  font-weight: 700;
+}
+
+.heading-s {
+  @extend %heading;
+  line-height: 15px;
+  letter-spacing: 2.4px;
+  font-size: 12px;
+}
+
+.heading-m {
+  @extend %heading;
+  line-height: 19px;
+  font-size: 15px;
+}
+
+.heading-l {
+  @extend %heading;
+  line-height: 23px;
+  font-size: 18px;
+}
+
+.heading-xl {
+  @extend %heading;
+  line-height: 30px;
+  font-size: 24px;
+}
+
+.text-l {
+  @include text-l;
+}
+
+.text-m {
+  @include text-m;
+}
+
+.text-alert {
+  color: var(--alert-color);
+}

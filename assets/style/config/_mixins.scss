@@ -1,0 +1,26 @@
+@use "sass:map";
+
+// breakpoints
+@mixin media-breakpoint($type) {
+  $value: map.get($breakpoints, $type);
+  @if $value {
+    @media (min-width: $value) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// typography
+@mixin text-l {
+  line-height: 23px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+@mixin text-m {
+  line-height: 15px;
+  font-size: 12px;
+  font-weight: 700;
+}

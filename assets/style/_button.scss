@@ -1,0 +1,73 @@
+@use "sass:map";
+
+$btn-type: (
+  "primary",
+  "secondary",
+  "destructive",
+);
+
+.btn {
+  width: 100%;
+  padding-block: 8px 9px;
+  border-radius: 20px;
+  line-height: 23px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@each $type in $btn-type {
+  .btn-#{$type} {
+    @extend .btn;
+    background: var(--btn-#{$type}-bg);
+    color: var(--btn-#{$type}-color);
+
+    &:hover {
+      background: var(--btn-#{$type}-bg-hover);
+    }
+  }
+}
+
+.btn-lg {
+  padding-block: 15px 14px;
+  border-radius: 24px;
+  line-height: 19px;
+  font-size: 15px;
+}
+
+.btn-dropdown-item {
+  @include text-l;
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  background: var(--btn-dropdown-item-bg);
+  color: var(--btn-dropdown-item-color);
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  &:hover {
+    background: var(--btn-dropdown-item-bg-hover);
+  }
+}
+
+.btn-delete {
+  color: var(--btn-delete-color);
+  &:hover {
+    color:  var(--btn-delete-color-hover);
+  }
+}
+
+.btn-ellipsis {
+  line-height: 1;
+  color: var(--btn-ellipsis-color);
+}
+
+.btn-arrow {
+  color: transparent;
+  transition: rotate 0.3s;
+
+  &-up {
+    rotate: -180deg;
+  }
+}

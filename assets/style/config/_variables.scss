@@ -1,0 +1,27 @@
+// Color
+$purple: #635FC7;
+$purple-light: #A8A4FF;
+$black: #000112;
+$grey-darker: #20212C;
+$grey-dark: #2B2C37;
+$grey: #3E3F4E;
+$grey-medium: #828FA3;
+$grey-light: #E4EBFA;
+$grey-lighter: #F4F7FD;
+$white: #FFFFFF;
+$red: #EA5555;
+$red-light: #FF9898;
+
+// Semantic color
+$primary: $purple;
+$primary-light: $purple-light;
+$alert: $red;
+$alert-light: $red;
+
+// breakpoints
+$breakpoints: (
+  "tablet": 768px,
+  "tablet-l": 1024px,
+  "desktop": 1200px,
+  "desktop-l": 1440px
+);
