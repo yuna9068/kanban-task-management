@@ -49,6 +49,10 @@ img {
   height: 0; // 避免可能會有繼承字體大小或多了空白或其他問題
 }
 
+.nuxt-icon {
+  margin-bottom: 0 !important;
+}
+
 .pic-frame {
   display: block;
   overflow: hidden;

@@ -1,6 +1,3 @@
-@use "sass:color";
-@use "sass:map";
-
 // buttons property
 $btn-property: (
   "primary": (
@@ -9,8 +6,8 @@ $btn-property: (
     "color": $white
   ),
   "secondary": (
-    "bg": color.change($primary, $alpha: 0.1),
-    "bg-hover": color.change($primary, $alpha: 0.25),
+    "bg": change-color($primary, $alpha: 0.1),
+    "bg-hover": change-color($primary, $alpha: 0.25),
     "color": $primary
   ),
   "destructive": (
@@ -40,9 +37,9 @@ $btn-property: (
 
   // buttons
   @each $type, $property in $btn-property {
-    $key-list: map.keys($property);
+    $key-list: map-keys($property);
     @each $key in $key-list {
-      --btn-#{$type}-#{$key}: #{map.get($property, $key)};
+      --btn-#{$type}-#{$key}: #{map-get($property, $key)};
     }
   }
 

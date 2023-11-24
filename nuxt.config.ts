@@ -22,7 +22,10 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@import "~/assets/style/config/index.scss";',
+          additionalData: `
+            @use "sass:math";
+            @import "~/assets/style/config/index.scss";
+          `,
         },
       },
     },
