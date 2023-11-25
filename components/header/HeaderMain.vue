@@ -1,12 +1,27 @@
 <script lang="ts" setup>
 import { vOnClickOutside } from '@vueuse/components'
+import type { OnClickOutsideOptions } from '@vueuse/core'
+
+const route = useRoute()
+
+const boardStore = useBoardStore()
+const alertStore = useAlertStore()
+const { getBoard } = storeToRefs(boardStore)
+const { open } = alertStore
 
 const elFunctionMenuBtn = ref()
-const title = ref('Platform Launch')
 const boardsDisplay = ref(false)
 const menuDisplay = ref(false)
 
-const onClickOutsideHandler = [
+const page = computed(() => route.path)
+const isIndex = computed(() => page.value === '/')
+const title = computed(() => {
+  const result = isIndex.value ? getBoard.value?.name : page.value.replace('/', '').toUpperCase()
+  return result
+})
+const showFunctionBtn = computed(() => isIndex.value && getBoard.value?.name)
+
+const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
   () => {
     closeMenu()
   },
@@ -29,7 +44,8 @@ function editBoard() {
   closeMenu()
 }
 
-function deleteBoard() {
+function openModalAlert() {
+  open('board', title.value)
   closeMenu()
 }
 </script>
@@ -38,12 +54,12 @@ function deleteBoard() {
   <div class="header-main">
     <h2 class="title heading-l" @click="toggleBoards">
       <span>{{ title }}</span>
-      <button class="title-btn btn-arrow" :class="{ 'btn-arrow-up': boardsDisplay }">
+      <button v-show="showFunctionBtn" class="title-btn btn-arrow" :class="{ 'btn-arrow-up': boardsDisplay }">
         <SvgoIconChevronDown />
       </button>
     </h2>
 
-    <div class="function">
+    <div v-show="showFunctionBtn" class="function">
       <button class="function-task-btn btn-primary" @click="addTask">
         <SvgoIconAddTaskMobile class="function-task-btn-icon" />
         <span class="sr-only-mobile">+ Add New Task</span>
@@ -61,7 +77,7 @@ function deleteBoard() {
         <button class="btn-dropdown-item" @click="editBoard">
           Edit Board
         </button>
-        <button class="btn-dropdown-item text-alert" @click="deleteBoard">
+        <button class="btn-dropdown-item text-alert" @click="openModalAlert">
           Delete Board
         </button>
       </BaseDropdown>
