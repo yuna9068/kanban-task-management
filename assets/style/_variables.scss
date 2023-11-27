@@ -49,6 +49,10 @@ $btn-property: (
 
   // border
   --border-primary: 1px solid #{$grey-light};
+
+  // form
+  --form-label-color: #{$grey-medium};
+  --form-placeholder-color: #{change-color($black, $alpha: 0.25)};
 }
 
 [data-theme="dark"] {
@@ -66,4 +70,8 @@ $btn-property: (
 
   // border
   --border-primary: 1px solid #{$grey};
+
+  // form
+  --form-label-color: #{$white};
+  --form-placeholder-color: #{change-color($white, $alpha: 0.25)};
 }

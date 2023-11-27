@@ -25,7 +25,7 @@ function close() {
 
 <template>
   <teleport to="body">
-    <div class="modal" :class="{ 'modal-open': display }" @click="close">
+    <div class="modal" :class="{ 'modal-open': display }" @click.self="close">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -94,10 +94,6 @@ function close() {
     max-height: 65.917968vh;
     padding: 32px;
   }
-}
-
-.modal-body {
-  padding-top: 24px;
 }
 
 .modal-footer {

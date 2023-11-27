@@ -20,7 +20,7 @@ $btn-type: (
     background: var(--btn-#{$type}-bg);
     color: var(--btn-#{$type}-color);
 
-    &:hover {
+    &:not([disabled]):hover {
       background: var(--btn-#{$type}-bg-hover);
     }
   }
@@ -44,14 +44,14 @@ $btn-type: (
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  &:hover {
+  &:not([disabled]):hover {
     background: var(--btn-dropdown-item-bg-hover);
   }
 }
 
 .btn-delete {
   color: var(--btn-delete-color);
-  &:hover {
+  &:not([disabled]):hover {
     color:  var(--btn-delete-color-hover);
   }
 }

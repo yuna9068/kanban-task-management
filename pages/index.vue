@@ -9,6 +9,7 @@
       About
     </NuxtLink>
 
+    <BaseModalBoard />
     <BaseModalAlert />
   </div>
 </template>

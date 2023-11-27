@@ -1,0 +1,54 @@
+.form-item {
+  padding-top: 24px;
+
+  &-label {
+    display: block;
+  }
+  
+  &-label-text {
+    @include text-m;
+    margin-bottom: 8px;
+    color: var(--form-label-color);
+  }
+  
+  &-value {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    &:not(:first-child) {
+      margin-top: 12px;
+    }
+
+    &-input {
+      @include text-l;
+      flex: 1;
+      padding: 8px $form-input-padding-inline 9px;
+      border: 1px solid change-color($grey-medium, $alpha: 0.25);
+      border-radius: 4px;
+      background: var(--primary-bg);
+      color: var(--text-primary-color);
+      transition: border-color 0.3s;
+  
+      &:focus-visible {
+        outline: none;
+      }
+  
+      &::placeholder {
+        color: var(--form-placeholder-color);
+      }
+    }
+
+    &-error {
+      border-color: var(--alert-color);
+    }
+  }
+
+  &-error {
+    @include text-l;
+    position: absolute;
+    right: $form-input-padding-inline;
+    bottom: 9px;
+    text-align: right;
+  }
+}

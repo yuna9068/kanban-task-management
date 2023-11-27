@@ -6,8 +6,9 @@ const route = useRoute()
 
 const boardStore = useBoardStore()
 const alertStore = useAlertStore()
+const { open: openBoard } = boardStore
 const { getBoard } = storeToRefs(boardStore)
-const { open } = alertStore
+const { open: openAlert } = alertStore
 
 const elFunctionMenuBtn = ref()
 const boardsDisplay = ref(false)
@@ -40,12 +41,13 @@ function closeMenu() {
   menuDisplay.value = false
 }
 
-function editBoard() {
+function openModalBoard() {
+  openBoard('edit')
   closeMenu()
 }
 
 function openModalAlert() {
-  open('board', title.value)
+  openAlert('board', title.value)
   closeMenu()
 }
 </script>
@@ -74,7 +76,7 @@ function openModalAlert() {
         class="function-board-menu"
         :display="menuDisplay"
       >
-        <button class="btn-dropdown-item" @click="editBoard">
+        <button class="btn-dropdown-item" @click="openModalBoard">
           Edit Board
         </button>
         <button class="btn-dropdown-item text-alert" @click="openModalAlert">

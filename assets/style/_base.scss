@@ -36,6 +36,11 @@ button {
   background: initial;
   transition: all 0.3s;
   cursor: pointer;
+
+  &[disabled] {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
 }
 
 img {
