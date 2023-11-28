@@ -1,79 +1,99 @@
 import initialData from '@/assets/data/boards.json'
-import type { Board, Column, ModalBoard } from '@/types'
+import type { Board, Operation } from '@/types'
 
 export const useBoardStore = defineStore('board', () => {
   const boardList: Ref<Board[]> = ref([...initialData.boards])
-  const board: Ref<Board> = ref(boardList.value[0])
-  const modal: Ref<ModalBoard> = ref({
+  const selectedBoardIdx = ref(0)
+  const modal = ref({
     display: false,
     type: '',
   })
 
   const getBoardList = computed(() => boardList.value)
-  const getBoard = computed(() => board.value)
-  const getModalInfo = computed(() => modal.value)
+  const getBoard = computed(() => boardList.value[selectedBoardIdx.value])
+  const getModalBoardInfo = computed(() => modal.value)
 
+  /**
+   * 開啟看板 Modal
+   * @param type create 新增 | edit 編輯
+   */
+  function openModalBoard(type: Operation) {
+    modal.value.type = type
+    modal.value.display = true
+  }
+
+  /**
+   * 關閉看板 Modal
+   */
+  function closeModalBoard() {
+    modal.value.display = false
+  }
+
+  /**
+   * 新增看板
+   * @param newName 看板名稱
+   * @param newColumns 看板欄位
+   */
   function createBoard(newName: string, newColumns: string[]) {
-    const columns = newColumns.map(item => ({ name: item }))
+    const columns = newColumns.map(item => ({ name: item, tasks: [] }))
     boardList.value.push({
       name: newName,
       columns,
     })
 
-    board.value = boardList.value[boardList.value.length - 1]
-    modal.value.display = false
+    selectedBoardIdx.value = boardList.value.length - 1
+    closeModalBoard()
   }
 
+  /**
+   * 編輯目前查看的看板
+   * @param newName 看板名稱
+   * @param newColumns  看板欄位
+   */
   function editBoard(newName: string, newColumns: string[]) {
-    const boardIdx = boardList.value.findIndex(board => board.name === getBoard.value.name)
-    boardList.value[boardIdx].name = newName
+    boardList.value[selectedBoardIdx.value].name = newName
 
-    newColumns.forEach((column, columnIdx) => {
-      const originColumn = boardList.value[boardIdx].columns[columnIdx]
+    newColumns.forEach((newColumnName, newColumnIdx) => {
+      const originColumn = boardList.value[selectedBoardIdx.value].columns[newColumnIdx]
       if (originColumn) {
-        originColumn.name = column
+        originColumn.name = newColumnName
       }
       else {
-        boardList.value[boardIdx].columns.push({
-          name: column,
+        boardList.value[selectedBoardIdx.value].columns.push({
+          name: newColumnName,
           tasks: [],
         })
       }
     })
 
-    modal.value.display = false
+    closeModalBoard()
   }
 
-  function deleteBoard(name: string) {
-    const idx = boardList.value.findIndex(item => item.name === name)
-    if (idx > -1) {
-      boardList.value.splice(idx, 1)
-      board.value = boardList.value[idx] ?? boardList.value[boardList.value.length - 1]
-    }
+  /**
+   * 刪除目前查看的看板
+   */
+  function deleteBoard() {
+    boardList.value.splice(selectedBoardIdx.value, 1)
+    if (!boardList.value[selectedBoardIdx.value])
+      selectedBoardIdx.value = boardList.value.length - 1
   }
 
-  function resetData() {
+  /**
+   * 重置看板資料
+   */
+  function resetBoardData() {
     boardList.value = [...initialData.boards]
-  }
-
-  function open(openType: string) {
-    modal.value.type = openType
-    modal.value.display = true
-  }
-
-  function close() {
-    modal.value.display = false
   }
 
   return {
     getBoardList,
     getBoard,
-    getModalInfo,
+    getModalBoardInfo,
+    openModalBoard,
+    closeModalBoard,
     createBoard,
     editBoard,
     deleteBoard,
-    resetData,
-    open,
-    close,
+    resetBoardData,
   }
 })

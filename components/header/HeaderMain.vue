@@ -6,9 +6,9 @@ const route = useRoute()
 
 const boardStore = useBoardStore()
 const alertStore = useAlertStore()
-const { open: openBoard } = boardStore
+const { openModalBoard } = boardStore
 const { getBoard } = storeToRefs(boardStore)
-const { open: openAlert } = alertStore
+const { openModalAlert } = alertStore
 
 const elFunctionMenuBtn = ref()
 const boardsDisplay = ref(false)
@@ -37,17 +37,26 @@ function addTask() {
   console.warn('addTask')
 }
 
+/**
+ * 關閉操作看板下拉式選單
+ */
 function closeMenu() {
   menuDisplay.value = false
 }
 
-function openModalBoard() {
-  openBoard('edit')
+/**
+ * 開啟看板 Modal
+ */
+function openBoard() {
+  openModalBoard('edit')
   closeMenu()
 }
 
-function openModalAlert() {
-  openAlert('board', title.value)
+/**
+ * 開啟警告 Modal
+ */
+function openAlert() {
+  openModalAlert('board', title.value)
   closeMenu()
 }
 </script>
@@ -76,10 +85,10 @@ function openModalAlert() {
         class="function-board-menu"
         :display="menuDisplay"
       >
-        <button class="btn-dropdown-item" @click="openModalBoard">
+        <button class="btn-dropdown-item" @click="openBoard">
           Edit Board
         </button>
-        <button class="btn-dropdown-item text-alert" @click="openModalAlert">
+        <button class="btn-dropdown-item text-alert" @click="openAlert">
           Delete Board
         </button>
       </BaseDropdown>

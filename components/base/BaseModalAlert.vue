@@ -1,19 +1,19 @@
 <script lang="ts" setup>
 const alertStore = useAlertStore()
-const { close, deleteItem } = alertStore
-const { getDisplay, getTitle, getContent } = storeToRefs(alertStore)
+const { closeModalAlert, deleteItem } = alertStore
+const { getModalAlertInfo } = storeToRefs(alertStore)
 </script>
 
 <template>
   <BaseModal
     type="alert"
-    :display="getDisplay"
-    :title="getTitle"
-    @close="close"
+    :display="getModalAlertInfo.display"
+    :title="getModalAlertInfo.title"
+    @close="closeModalAlert"
   >
     <template #body>
       <p class="alert-content text-l">
-        {{ getContent }}
+        {{ getModalAlertInfo.content }}
       </p>
     </template>
 
@@ -22,7 +22,7 @@ const { getDisplay, getTitle, getContent } = storeToRefs(alertStore)
         <button class="btn-destructive" @click="deleteItem">
           Delete
         </button>
-        <button class="btn-secondary" @click="close">
+        <button class="btn-secondary" @click="closeModalAlert">
           Cancel
         </button>
       </div>
@@ -32,6 +32,7 @@ const { getDisplay, getTitle, getContent } = storeToRefs(alertStore)
 
 <style lang="scss" scoped>
 .alert-content {
+  padding-top: 24px;
   color: var(--text-secondary-color);
 }
 

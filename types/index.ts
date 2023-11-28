@@ -1,3 +1,6 @@
+export type Operation = 'create' | 'edit'
+export type AlertType = 'board' | 'task'
+
 interface Subtask {
   title: string
   isCompleted: boolean
@@ -18,11 +21,4 @@ export interface Column {
 export interface Board {
   name: string
   columns: Column[]
-}
-
-export interface ModalBoard {
-  display: boolean
-  type: string
-  name: string
-  columns: string[]
 }
