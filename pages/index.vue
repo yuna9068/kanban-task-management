@@ -10,6 +10,7 @@
     </NuxtLink>
 
     <BaseModalBoard />
+    <BaseModalTask />
     <BaseModalAlert />
   </div>
 </template>

@@ -6,9 +6,11 @@ const route = useRoute()
 
 const boardStore = useBoardStore()
 const alertStore = useAlertStore()
+const taskStore = useTaskStore()
 const { openModalBoard } = boardStore
 const { getBoard } = storeToRefs(boardStore)
 const { openModalAlert } = alertStore
+const { openModalTask } = taskStore
 
 const elFunctionMenuBtn = ref()
 const boardsDisplay = ref(false)
@@ -34,7 +36,7 @@ function toggleBoards() {
 }
 
 function addTask() {
-  console.warn('addTask')
+  openModalTask('create')
 }
 
 /**
@@ -63,7 +65,7 @@ function openAlert() {
 
 <template>
   <div class="header-main">
-    <h2 class="title heading-l" @click="toggleBoards">
+    <h2 class="title heading-l" @click="toggleBoards()">
       <span>{{ title }}</span>
       <button v-show="showFunctionBtn" class="title-btn btn-arrow" :class="{ 'btn-arrow-up': boardsDisplay }">
         <SvgoIconChevronDown />
@@ -71,7 +73,7 @@ function openAlert() {
     </h2>
 
     <div v-show="showFunctionBtn" class="function">
-      <button class="function-task-btn btn-primary" @click="addTask">
+      <button class="function-task-btn btn-primary" @click="addTask()">
         <SvgoIconAddTaskMobile class="function-task-btn-icon" />
         <span class="sr-only-mobile">+ Add New Task</span>
       </button>
@@ -85,10 +87,10 @@ function openAlert() {
         class="function-board-menu"
         :display="menuDisplay"
       >
-        <button class="btn-dropdown-item" @click="openBoard">
+        <button class="btn-dropdown-item" @click="openBoard()">
           Edit Board
         </button>
-        <button class="btn-dropdown-item text-alert" @click="openAlert">
+        <button class="btn-dropdown-item text-alert" @click="openAlert()">
           Delete Board
         </button>
       </BaseDropdown>

@@ -86,6 +86,8 @@ export const useBoardStore = defineStore('board', () => {
   }
 
   return {
+    boardList,
+    selectedBoardIdx,
     getBoardList,
     getBoard,
     getModalBoardInfo,

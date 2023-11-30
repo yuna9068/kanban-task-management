@@ -2,7 +2,9 @@ import type { AlertType } from '@/types'
 
 export const useAlertStore = defineStore('alert', () => {
   const boardStore = useBoardStore()
+  const taskStore = useTaskStore()
   const { deleteBoard } = boardStore
+  const { deleteTask } = taskStore
 
   const modal = ref({
     display: false,
@@ -42,9 +44,8 @@ export const useAlertStore = defineStore('alert', () => {
   function deleteItem() {
     if (isBoard.value)
       deleteBoard()
-
     else
-      console.warn('delete task')
+      deleteTask()
 
     closeModalAlert()
   }

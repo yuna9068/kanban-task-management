@@ -19,10 +19,10 @@ const { getModalAlertInfo } = storeToRefs(alertStore)
 
     <template #footer>
       <div class="alert-btn">
-        <button class="btn-destructive" @click="deleteItem">
+        <button class="btn-destructive" @click="deleteItem()">
           Delete
         </button>
-        <button class="btn-secondary" @click="closeModalAlert">
+        <button class="btn-secondary" @click="closeModalAlert()">
           Cancel
         </button>
       </div>

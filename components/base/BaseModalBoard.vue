@@ -70,23 +70,21 @@ watch(() => getModalBoardInfo.value.display, (newValue) => {
     @close="closeModalBoard"
   >
     <template #body>
-      <div class="board-form">
-        <BaseFormItem
-          v-model:single="boardName"
-          type="single"
-          label="Board Name"
-          placeholder="e.g. Web Design"
-        />
+      <BaseFormItem
+        v-model:single="boardName"
+        type="single"
+        label="Board Name"
+        placeholder="e.g. Web Design"
+      />
 
-        <BaseFormItem
-          v-model:list="boardColumns"
-          type="list"
-          label="Board Columns"
-          placeholder="e.g. Todo"
-        />
-      </div>
+      <BaseFormItem
+        v-model:list="boardColumns"
+        type="list"
+        label="Board Columns"
+        placeholder="e.g. Todo"
+      />
 
-      <button class="btn-secondary" @click="addColumn">
+      <button class="btn-secondary" @click="addColumn()">
         + Add New Column
       </button>
     </template>
@@ -96,7 +94,7 @@ watch(() => getModalBoardInfo.value.display, (newValue) => {
         v-if="isEdit"
         class="btn-primary"
         :disabled="!validateStatus"
-        @click="edit"
+        @click="edit()"
       >
         Save Changes
       </button>
@@ -104,7 +102,7 @@ watch(() => getModalBoardInfo.value.display, (newValue) => {
         v-else
         class="btn-primary"
         :disabled="!validateStatus"
-        @click="create"
+        @click="create()"
       >
         Create New Board
       </button>

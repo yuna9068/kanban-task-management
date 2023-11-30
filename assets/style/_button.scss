@@ -42,6 +42,7 @@ $btn-type: (
   color: var(--btn-dropdown-item-color);
   text-align: left;
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
 
   &:not([disabled]):hover {
