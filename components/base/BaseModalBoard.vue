@@ -14,7 +14,7 @@ const boardColumns: Ref<string[]> = ref([])
  * 驗證表單資料是否皆有值，有值才可點擊 footer 區塊的按鈕
  */
 const validateStatus = computed(() => (
-  boardName.value.length > 0 && boardColumns.value.every(item => item.length > 1)
+  boardName.value.length > 0 && boardColumns.value.every(item => item.length > 0)
 ))
 
 /**
