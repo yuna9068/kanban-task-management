@@ -1,8 +1,23 @@
+<script lang="ts" setup>
+</script>
+
 <template>
-  <div>
+  <div class="app">
     <NuxtLayout>
-      <HeaderIndex />
-      <NuxtPage />
+      <HeaderIndex class="header" />
+      <NuxtPage class="page" />
     </NuxtLayout>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+:deep(.page) {
+  flex: 1;
+}
+</style>

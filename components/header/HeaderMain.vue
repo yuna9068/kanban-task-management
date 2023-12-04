@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { vOnClickOutside } from '@vueuse/components'
+import { useMediaQuery } from '@vueuse/core'
 import type { OnClickOutsideOptions } from '@vueuse/core'
 
 const route = useRoute()
@@ -7,13 +8,15 @@ const route = useRoute()
 const boardStore = useBoardStore()
 const alertStore = useAlertStore()
 const taskStore = useTaskStore()
+const sidebarStore = useSidebarStore()
 const { openModalBoard } = boardStore
 const { getBoard } = storeToRefs(boardStore)
 const { openModalAlert } = alertStore
 const { openModalTask } = taskStore
+const { toggleSidebar } = sidebarStore
+const { getSidebarDisplay } = storeToRefs(sidebarStore)
 
 const elFunctionMenuBtn = ref()
-const boardsDisplay = ref(false)
 const menuDisplay = ref(false)
 
 const page = computed(() => route.path)
@@ -24,6 +27,9 @@ const title = computed(() => {
 })
 const showFunctionBtn = computed(() => isIndex.value && getBoard.value?.name)
 
+const isMobile = useMediaQuery('(max-width: 767px)')
+const disabledFunctionBtn = computed(() => isMobile.value && getSidebarDisplay.value)
+
 const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
   () => {
     closeMenu()
@@ -32,7 +38,7 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
 ]
 
 function toggleBoards() {
-  boardsDisplay.value = !boardsDisplay.value
+  toggleSidebar()
 }
 
 function addTask() {
@@ -67,18 +73,31 @@ function openAlert() {
   <div class="header-main">
     <h2 class="title heading-l" @click="toggleBoards()">
       <span>{{ title }}</span>
-      <button v-show="showFunctionBtn" class="title-btn btn-arrow" :class="{ 'btn-arrow-up': boardsDisplay }">
+      <button
+        v-show="showFunctionBtn"
+        class="title-btn btn-arrow"
+        :class="{ 'btn-arrow-up': getSidebarDisplay }"
+      >
         <SvgoIconChevronDown />
       </button>
     </h2>
 
     <div v-show="showFunctionBtn" class="function">
-      <button class="function-task-btn btn-primary" @click="addTask()">
+      <button
+        class="function-task-btn btn-primary"
+        :disabled="disabledFunctionBtn"
+        @click="addTask()"
+      >
         <SvgoIconAddTaskMobile class="function-task-btn-icon" />
         <span class="sr-only-mobile">+ Add New Task</span>
       </button>
 
-      <button ref="elFunctionMenuBtn" class="function-menu-btn btn-ellipsis" @click="menuDisplay = !menuDisplay">
+      <button
+        ref="elFunctionMenuBtn"
+        class="function-menu-btn btn-ellipsis"
+        :disabled="disabledFunctionBtn"
+        @click="menuDisplay = !menuDisplay"
+      >
         <SvgoIconVerticalEllipsis class="function-menu-btn-icon" />
       </button>
 
@@ -137,10 +156,13 @@ function openAlert() {
   &-task-btn {
     padding: 10px 18px;
 
-    $tablet: map-get($breakpoints, tablet) - 1;
-    @media (max-width: $tablet) {
+    @include media-mobile {
       font-size: 0;
       line-height: 1;
+    }
+
+    @include media-breakpoint(tablet) {
+      @include btn-lg;
     }
 
     &-icon {
@@ -167,6 +189,7 @@ function openAlert() {
     position: absolute;
     top: calc(100% - 6px);
     right: 16.31px;
+    z-index: 10;
   }
 }
 </style>

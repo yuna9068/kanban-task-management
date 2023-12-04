@@ -25,7 +25,7 @@ function close() {
 
 <template>
   <teleport to="body">
-    <div class="modal" :class="{ 'modal-open': display }" @click.self="close()">
+    <div class="modal" :class="{ open: display }" @click.self="close()">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -48,25 +48,7 @@ function close() {
 
 <style lang="scss" scoped>
 .modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 0;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 99;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  transition: opacity 0.3s, height 0s 0.3s;
-  overflow: hidden;
-
-  &-open {
-    height: 100vh;
-    opacity: 1;
-    transition: opacity 0.3s;
-  }
+  @include backdrop;
 }
 
 .modal-dialog {
@@ -78,7 +60,7 @@ function close() {
     width: 480px;
   }
 
-  @at-root .modal-open & {
+  @at-root .open & {
     transform: none;
   }
 }

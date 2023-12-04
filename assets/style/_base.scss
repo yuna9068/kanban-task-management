@@ -22,6 +22,11 @@ body {
   // 僅在 Mac OS X / macOS 有效，避免文字鋸齒化
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  &:has(.backdrop.open),
+  &:has(.modal.open) {
+    overflow: hidden;
+  }
 }
 
 a {

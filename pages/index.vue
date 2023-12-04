@@ -3,12 +3,9 @@
 
 <template>
   <div class="index">
-    <p>Page: index</p>
-
-    <NuxtLink to="about">
-      About
-    </NuxtLink>
-
+    <main class="main">
+      <SidebarIndex />
+    </main>
     <BaseModalBoard />
     <BaseModalTask />
     <BaseModalAlert />
@@ -16,4 +13,12 @@
 </template>
 
 <style lang="scss" scoped>
+.index {
+  position: relative;
+}
+
+.main {
+  height: 100%;
+  display: flex;
+}
 </style>

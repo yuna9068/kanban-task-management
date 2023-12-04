@@ -10,6 +10,17 @@
   }
 }
 
+@mixin media-mobile {
+  $tablet: map-get($breakpoints, tablet) - 1;
+  @if $tablet {
+    @media (max-width: $tablet) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
 // typography
 @mixin text-l {
   line-height: 23px;
@@ -21,4 +32,36 @@
   line-height: 15px;
   font-size: 12px;
   font-weight: 700;
+}
+
+// button
+@mixin btn-lg {
+  padding-block: 15px 14px;
+  border-radius: 24px;
+  line-height: 19px;
+  font-size: 15px;
+}
+
+// backdrop
+@mixin backdrop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s, height 0s 0.3s;
+  overflow: hidden;
+
+  &.open {
+    height: 100vh;
+    z-index: 99;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
 }

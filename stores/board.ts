@@ -79,6 +79,14 @@ export const useBoardStore = defineStore('board', () => {
   }
 
   /**
+   * 切換查看的看板
+   * @param idx 欲查看的看板
+   */
+  function switchBoard(idx: number) {
+    selectedBoardIdx.value = idx
+  }
+
+  /**
    * 重置看板資料
    */
   function resetBoardData() {
@@ -96,6 +104,7 @@ export const useBoardStore = defineStore('board', () => {
     createBoard,
     editBoard,
     deleteBoard,
+    switchBoard,
     resetBoardData,
   }
 })

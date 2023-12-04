@@ -15,7 +15,7 @@
   padding: 20px 16px 19px;
 
   @include media-breakpoint(tablet) {
-    padding: 32.78px initial initial 26px;
+    padding: 32.78px 0 0 26px;
     border-right: var(--border-primary);
   }
 

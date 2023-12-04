@@ -26,6 +26,11 @@ $btn-property: (
   ),
   "ellipsis": (
     "color": $grey-medium
+  ),
+  "sidebar-board": (
+    "bg": var(--primary-bg),
+    "bg-hover": change-color($primary, $alpha: 0.1),
+    "color": $grey-medium
   )
 );
 
@@ -53,6 +58,9 @@ $btn-property: (
   // form
   --form-label-color: #{$grey-medium};
   --form-placeholder-color: #{change-color($black, $alpha: 0.25)};
+
+  // sidebar
+  --sidebar-board-padding-inline: 24px;
 }
 
 [data-theme="dark"] {
@@ -64,6 +72,7 @@ $btn-property: (
   --btn-secondary-bg-hover: #{$white};
   --btn-dropdown-item-bg: #{$grey-darker};
   --btn-dropdown-item-bg-hover: #{$grey-dark};
+  --btn-sidebar-board-bg-hover: #{$white};
 
   // typography
   --text-primary-color: #{$white};
