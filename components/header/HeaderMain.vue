@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { vOnClickOutside } from '@vueuse/components'
-import { useMediaQuery } from '@vueuse/core'
+import { useToggle } from '@vueuse/core'
 import type { OnClickOutsideOptions } from '@vueuse/core'
 
 const route = useRoute()
@@ -16,8 +16,11 @@ const { openModalTask } = taskStore
 const { toggleSidebar } = sidebarStore
 const { getSidebarDisplay } = storeToRefs(sidebarStore)
 
+const { isMobile } = useDevice()
+
 const elFunctionMenuBtn = ref()
 const menuDisplay = ref(false)
+const toggleMenu = useToggle(menuDisplay)
 
 const page = computed(() => route.path)
 const isIndex = computed(() => page.value === '/')
@@ -27,7 +30,6 @@ const title = computed(() => {
 })
 const showFunctionBtn = computed(() => isIndex.value && getBoard.value?.name)
 
-const isMobile = useMediaQuery('(max-width: 767px)')
 const disabledFunctionBtn = computed(() => isMobile.value && getSidebarDisplay.value)
 const disabledAddNewTaskBtn = computed(() => !getBoard.value.columns.length)
 
@@ -38,8 +40,12 @@ const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
   { ignore: [elFunctionMenuBtn] },
 ]
 
+/**
+ * 裝置為手機時，點擊看板名稱切換顯示/隱藏看板 Modal
+ */
 function toggleBoards() {
-  toggleSidebar()
+  if (isMobile.value)
+    toggleSidebar()
 }
 
 function addTask() {
@@ -50,7 +56,7 @@ function addTask() {
  * 關閉操作看板下拉式選單
  */
 function closeMenu() {
-  menuDisplay.value = false
+  toggleMenu(false)
 }
 
 /**
@@ -97,7 +103,7 @@ function openAlert() {
         ref="elFunctionMenuBtn"
         class="function-menu-btn btn-ellipsis"
         :disabled="disabledFunctionBtn"
-        @click="menuDisplay = !menuDisplay"
+        @click="toggleMenu()"
       >
         <SvgoIconVerticalEllipsis class="function-menu-btn-icon" />
       </button>

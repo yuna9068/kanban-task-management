@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useVModels } from '@vueuse/core'
+import { useToggle, useVModels } from '@vueuse/core'
 
 interface Props {
   modelValue: string
@@ -18,21 +18,15 @@ const emits = defineEmits(['update:modelValue'])
 const { modelValue } = useVModels(props, emits)
 
 const menuDisplay = ref(false)
+const toggleMenu = useToggle(menuDisplay)
 
 /**
- * 關閉下拉式選單
- */
-function closeMenu() {
-  menuDisplay.value = false
-}
-
-/**
- * 選擇項目
+ * 選擇項目，並關閉下拉式選單
  * @param name 項目名稱
  */
 function selectItem(name: string) {
   modelValue.value = name
-  closeMenu()
+  toggleMenu(false)
 }
 </script>
 
@@ -40,7 +34,7 @@ function selectItem(name: string) {
   <div class="form-item-value">
     <p
       class="form-item-value-input"
-      @click="menuDisplay = !menuDisplay"
+      @click="toggleMenu()"
     >
       {{ modelValue || placeholder }}
     </p>

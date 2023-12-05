@@ -1,15 +1,13 @@
 <script lang="ts" setup>
-import { useMediaQuery } from '@vueuse/core'
-
 const boardStore = useBoardStore()
 const sidebarStore = useSidebarStore()
 const { openModalBoard, switchBoard } = boardStore
 const { toggleSidebar } = sidebarStore
 const { getBoardList, selectedBoardIdx } = storeToRefs(boardStore)
 
-const sum = computed(() => getBoardList.value.length)
+const { isMobile } = useDevice()
 
-const isMobile = useMediaQuery('(max-width: 767px)')
+const sum = computed(() => getBoardList.value.length)
 
 function isSelected(idx: number) {
   return idx === selectedBoardIdx.value
