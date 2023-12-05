@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useVModel } from '@vueuse/core'
+import { useVModels } from '@vueuse/core'
 import type { Column, FormItemType, Subtask } from '@/types'
 
 interface Props {
@@ -34,11 +34,7 @@ const emits = defineEmits([
   'update:subtask',
 ])
 
-const proxySingle = useVModel(props, 'single', emits)
-const proxyList = useVModel(props, 'column', emits)
-const proxyTextarea = useVModel(props, 'textarea', emits)
-const proxySelect = useVModel(props, 'select', emits)
-const proxySubtask = useVModel(props, 'subtask', emits)
+const { single, column, textarea, select, subtask } = useVModels(props, emits)
 
 const renderTag = computed(() => props.type === 'select' ? 'div' : 'label')
 
@@ -57,16 +53,16 @@ function renderItem(type: FormItemType) {
 function removeValue(idx: number) {
   switch (props.type) {
     case 'column':
-      proxyList.value.splice(idx, 1)
+      column.value.splice(idx, 1)
       break
 
     case 'subtask':
-      if (proxySubtask.value.length > 1) {
-        proxySubtask.value.splice(idx, 1)
+      if (subtask.value.length > 1) {
+        subtask.value.splice(idx, 1)
       }
       else {
-        proxySubtask.value[idx].title = ''
-        proxySubtask.value[idx].isCompleted = false
+        subtask.value[idx].title = ''
+        subtask.value[idx].isCompleted = false
       }
       break
 
@@ -85,13 +81,13 @@ function removeValue(idx: number) {
 
       <template v-if="renderItem('single')">
         <BaseInput
-          v-model="proxySingle"
+          v-model="single"
           :placeholder="placeholder"
         />
       </template>
 
       <template v-if="renderItem('column')">
-        <template v-for="(item, idx) in proxyList" :key="idx">
+        <template v-for="(item, idx) in column" :key="idx">
           <BaseInput
             v-model="item.name"
             :placeholder="placeholder"
@@ -102,7 +98,7 @@ function removeValue(idx: number) {
       </template>
 
       <template v-if="renderItem('subtask')">
-        <template v-for="(item, idx) in proxySubtask" :key="idx">
+        <template v-for="(item, idx) in subtask" :key="idx">
           <BaseInput
             v-model="item.title"
             :placeholder="placeholder"
@@ -114,14 +110,14 @@ function removeValue(idx: number) {
 
       <template v-if="renderItem('textarea')">
         <BaseTextarea
-          v-model="proxyTextarea"
+          v-model="textarea"
           :placeholder="placeholder"
         />
       </template>
 
       <template v-if="renderItem('select')">
         <BaseSelect
-          v-model="proxySelect"
+          v-model="select"
           :list="selectList"
           :placeholder="placeholder"
         />

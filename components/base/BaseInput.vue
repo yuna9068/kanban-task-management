@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useVModel } from '@vueuse/core'
+import { useVModels } from '@vueuse/core'
 
 const props = defineProps({
   modelValue: {
@@ -18,15 +18,15 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue', 'remove'])
 
-const proxyValue = useVModel(props, 'modelValue', emits)
+const { modelValue } = useVModels(props, emits)
 
-const isError = computed(() => proxyValue.value.length < 1)
+const isError = computed(() => modelValue.value.length < 1)
 </script>
 
 <template>
   <div class="form-item-value">
     <input
-      v-model.lazy.trim="proxyValue"
+      v-model.lazy.trim="modelValue"
       class="form-item-value-input"
       :class="{ 'form-item-value-error': isError }"
       type="text"

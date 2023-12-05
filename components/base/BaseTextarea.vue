@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useVModel } from '@vueuse/core'
+import { useVModels } from '@vueuse/core'
 
 interface Props {
   modelValue: string
@@ -13,13 +13,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits(['update:modelValue'])
 
-const proxyValue = useVModel(props, 'modelValue', emits)
+const { modelValue } = useVModels(props, emits)
 </script>
 
 <template>
   <div class="form-item-value">
     <textarea
-      v-model.lazy.trim="proxyValue"
+      v-model.lazy.trim="modelValue"
       class="form-item-value-input"
       :placeholder="placeholder"
     />

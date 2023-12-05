@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useVModel } from '@vueuse/core'
+import { useVModels } from '@vueuse/core'
 
 interface Props {
   modelValue: string
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits(['update:modelValue'])
 
-const proxyValue = useVModel(props, 'modelValue', emits)
+const { modelValue } = useVModels(props, emits)
 
 const menuDisplay = ref(false)
 
@@ -31,7 +31,7 @@ function closeMenu() {
  * @param name 項目名稱
  */
 function selectItem(name: string) {
-  proxyValue.value = name
+  modelValue.value = name
   closeMenu()
 }
 </script>
@@ -42,7 +42,7 @@ function selectItem(name: string) {
       class="form-item-value-input"
       @click="menuDisplay = !menuDisplay"
     >
-      {{ proxyValue || placeholder }}
+      {{ modelValue || placeholder }}
     </p>
 
     <BaseDropdown
