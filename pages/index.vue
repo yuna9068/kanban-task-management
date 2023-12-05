@@ -7,8 +7,8 @@
       <SidebarIndex />
       <BoardIndex class="main-board" />
     </main>
-    <BaseModalBoard />
-    <BaseModalTask />
+    <BoardModal />
+    <TaskModal />
     <BaseModalAlert />
   </div>
 </template>
