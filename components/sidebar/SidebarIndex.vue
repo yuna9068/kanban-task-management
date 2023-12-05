@@ -37,16 +37,17 @@ function close() {
 
   @include media-breakpoint(tablet) {
     width: $logo-width-tablet;
-    translate: -100%;
-    transition: translate 0.3s;
+    margin-left: -$logo-width-tablet;
+    transition: margin-left 0.3s;
 
     &.open {
-      translate: 0;
+      margin-left: 0;
     }
   }
 
   @include media-breakpoint(desktop) {
     width: $logo-width-desktop;
+    margin-left: -$logo-width-desktop;
   }
 
 }

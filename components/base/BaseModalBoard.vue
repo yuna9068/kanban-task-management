@@ -26,6 +26,9 @@ function initialData() {
   if (isEdit.value) {
     boardName.value = getBoard.value.name
     boardColumns.value = getBoard.value.columns.map((item: Column) => item.name)
+
+    if (getModalBoardInfo.value.newColumn)
+      addColumn()
   }
   else {
     boardName.value = ''

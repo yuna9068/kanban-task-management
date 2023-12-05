@@ -29,6 +29,7 @@ const showFunctionBtn = computed(() => isIndex.value && getBoard.value?.name)
 
 const isMobile = useMediaQuery('(max-width: 767px)')
 const disabledFunctionBtn = computed(() => isMobile.value && getSidebarDisplay.value)
+const disabledAddNewTaskBtn = computed(() => !getBoard.value.columns.length)
 
 const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
   () => {
@@ -85,7 +86,7 @@ function openAlert() {
     <div v-show="showFunctionBtn" class="function">
       <button
         class="function-task-btn btn-primary"
-        :disabled="disabledFunctionBtn"
+        :disabled="disabledFunctionBtn || disabledAddNewTaskBtn"
         @click="addTask()"
       >
         <SvgoIconAddTaskMobile class="function-task-btn-icon" />

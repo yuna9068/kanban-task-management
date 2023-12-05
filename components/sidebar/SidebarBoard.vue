@@ -23,7 +23,9 @@ function selectBoard(idx: number) {
 }
 
 function createBoard() {
-  toggleSidebar(false)
+  if (isMobile.value)
+    toggleSidebar(false)
+
   openModalBoard('create')
 }
 </script>

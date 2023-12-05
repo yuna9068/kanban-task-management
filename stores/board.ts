@@ -7,6 +7,7 @@ export const useBoardStore = defineStore('board', () => {
   const modal = ref({
     display: false,
     type: '',
+    newColumn: false,
   })
 
   const getBoardList = computed(() => boardList.value)
@@ -16,10 +17,12 @@ export const useBoardStore = defineStore('board', () => {
   /**
    * 開啟看板 Modal
    * @param type create 新增 | edit 編輯
+   * @param newColumn 是否要在開啟看板 Modal 時新增一個空白欄位
    */
-  function openModalBoard(type: Operation) {
+  function openModalBoard(type: Operation, newColumn: boolean = false) {
     modal.value.type = type
     modal.value.display = true
+    modal.value.newColumn = newColumn
   }
 
   /**
@@ -93,6 +96,13 @@ export const useBoardStore = defineStore('board', () => {
     boardList.value = [...initialData.boards]
   }
 
+  /**
+   * 點擊 "Add New Column" 後開啟看板 Modal 並新增空白欄位
+   */
+  function addNewColumn() {
+    openModalBoard('edit', true)
+  }
+
   return {
     boardList,
     selectedBoardIdx,
@@ -106,5 +116,6 @@ export const useBoardStore = defineStore('board', () => {
     deleteBoard,
     switchBoard,
     resetBoardData,
+    addNewColumn,
   }
 })

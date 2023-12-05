@@ -56,9 +56,9 @@ const { getSidebarDisplay } = storeToRefs(sidebarStore)
   height: 48px;
   padding-top: 19px;
   padding-left: 18px;
-  position: absolute;
-  bottom: 0;
-  left: 100%;
+  position: fixed;
+  bottom: 32px;
+  left: 0;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   text-align: left;

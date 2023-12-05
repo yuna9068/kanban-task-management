@@ -10,7 +10,7 @@ html {
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
 
   background: var(--secondary-bg);
   color: var(--text-primary-color);
@@ -23,9 +23,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  &:has(.backdrop.open),
   &:has(.modal.open) {
     overflow: hidden;
+  }
+
+  @include media-mobile {
+    &:has(.backdrop.open) {
+      overflow: hidden;
+    }
   }
 }
 
