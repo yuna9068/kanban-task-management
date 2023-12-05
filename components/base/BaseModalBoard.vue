@@ -8,13 +8,13 @@ const { getBoard, getModalBoardInfo } = storeToRefs(boardStore)
 const isEdit = computed(() => getModalBoardInfo.value.type === 'edit')
 const title = computed(() => isEdit.value ? 'Edit Board' : 'Add New Board')
 const boardName = ref('')
-const boardColumns: Ref<string[]> = ref([])
+const boardColumns: Ref<Column[]> = ref([])
 
 /**
  * 驗證表單資料是否皆有值，有值才可點擊 footer 區塊的按鈕
  */
 const validateStatus = computed(() => (
-  boardName.value.length > 0 && boardColumns.value.every(item => item.length > 0)
+  boardName.value.length > 0 && boardColumns.value.every(item => item.name.length > 0)
 ))
 
 /**
@@ -25,14 +25,17 @@ const validateStatus = computed(() => (
 function initialData() {
   if (isEdit.value) {
     boardName.value = getBoard.value.name
-    boardColumns.value = getBoard.value.columns.map((item: Column) => item.name)
+    boardColumns.value = [...getBoard.value.columns]
 
     if (getModalBoardInfo.value.newColumn)
       addColumn()
   }
   else {
     boardName.value = ''
-    boardColumns.value = ['Todo', 'Doing']
+    boardColumns.value = [
+      { name: 'Todo', tasks: [] },
+      { name: 'Doing', tasks: [] },
+    ]
   }
 }
 
@@ -40,7 +43,7 @@ function initialData() {
  * 新增欄位輸入框
  */
 function addColumn() {
-  boardColumns.value.push('')
+  boardColumns.value.push({ name: '', tasks: [] })
 }
 
 /**
@@ -81,8 +84,8 @@ watch(() => getModalBoardInfo.value.display, (newValue) => {
       />
 
       <BaseFormItem
-        v-model:list="boardColumns"
-        type="list"
+        v-model:column="boardColumns"
+        type="column"
         label="Board Columns"
         placeholder="e.g. Todo"
       />

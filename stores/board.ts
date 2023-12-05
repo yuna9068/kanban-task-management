@@ -1,5 +1,5 @@
 import initialData from '@/assets/data/boards.json'
-import type { Board, Operation } from '@/types'
+import type { Board, Column, Operation } from '@/types'
 
 export const useBoardStore = defineStore('board', () => {
   const boardList: Ref<Board[]> = ref([...initialData.boards])
@@ -37,11 +37,10 @@ export const useBoardStore = defineStore('board', () => {
    * @param newName 看板名稱
    * @param newColumns 看板欄位
    */
-  function createBoard(newName: string, newColumns: string[]) {
-    const columns = newColumns.map(item => ({ name: item, tasks: [] }))
+  function createBoard(newName: string, newColumns: Column[]) {
     boardList.value.push({
       name: newName,
-      columns,
+      columns: [...newColumns],
     })
 
     selectedBoardIdx.value = boardList.value.length - 1
@@ -53,21 +52,9 @@ export const useBoardStore = defineStore('board', () => {
    * @param newName 看板名稱
    * @param newColumns  看板欄位
    */
-  function editBoard(newName: string, newColumns: string[]) {
+  function editBoard(newName: string, newColumns: Column[]) {
     boardList.value[selectedBoardIdx.value].name = newName
-
-    newColumns.forEach((newColumnName, newColumnIdx) => {
-      const originColumn = boardList.value[selectedBoardIdx.value].columns[newColumnIdx]
-      if (originColumn) {
-        originColumn.name = newColumnName
-      }
-      else {
-        boardList.value[selectedBoardIdx.value].columns.push({
-          name: newColumnName,
-          tasks: [],
-        })
-      }
-    })
+    boardList.value[selectedBoardIdx.value].columns = [...newColumns]
 
     closeModalBoard()
   }

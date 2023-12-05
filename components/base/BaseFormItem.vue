@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { useVModel } from '@vueuse/core'
-import type { FormItemType, Subtask } from '@/types'
+import type { Column, FormItemType, Subtask } from '@/types'
 
 interface Props {
   label: string
   single?: string
-  list?: string[]
+  column?: Column[]
   textarea?: string
   select?: string
   selectList?: string[]
@@ -17,7 +17,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   label: '',
   single: '',
-  list: () => [],
+  column: () => [],
   textarea: '',
   select: '',
   selectList: () => [],
@@ -28,14 +28,14 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits([
   'update:single',
-  'update:list',
+  'update:column',
   'update:textarea',
   'update:select',
   'update:subtask',
 ])
 
 const proxySingle = useVModel(props, 'single', emits)
-const proxyList = useVModel(props, 'list', emits)
+const proxyList = useVModel(props, 'column', emits)
 const proxyTextarea = useVModel(props, 'textarea', emits)
 const proxySelect = useVModel(props, 'select', emits)
 const proxySubtask = useVModel(props, 'subtask', emits)
@@ -56,7 +56,7 @@ function renderItem(type: FormItemType) {
  */
 function removeValue(idx: number) {
   switch (props.type) {
-    case 'list':
+    case 'column':
       proxyList.value.splice(idx, 1)
       break
 
@@ -90,10 +90,10 @@ function removeValue(idx: number) {
         />
       </template>
 
-      <template v-if="renderItem('list')">
+      <template v-if="renderItem('column')">
         <template v-for="(item, idx) in proxyList" :key="idx">
           <BaseInput
-            v-model="proxyList[idx]"
+            v-model="item.name"
             :placeholder="placeholder"
             :deletable="true"
             @remove="removeValue(idx)"
