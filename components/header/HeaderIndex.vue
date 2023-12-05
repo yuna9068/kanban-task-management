@@ -13,13 +13,7 @@
   background: var(--primary-bg);
 
   &-logo {
-    @include media-breakpoint(tablet) {
-      width: $logo-width-tablet;
-    }
-
-    @include media-breakpoint(desktop) {
-      width: $logo-width-desktop;
-    }
+    width: var(--logo-width);
   }
 
   &-main {

@@ -36,20 +36,14 @@ function close() {
   }
 
   @include media-breakpoint(tablet) {
-    width: $logo-width-tablet;
-    margin-left: -$logo-width-tablet;
+    width: var(--logo-width);
+    margin-left: calc(var(--logo-width) * -1);
     transition: margin-left 0.3s;
 
     &.open {
       margin-left: 0;
     }
   }
-
-  @include media-breakpoint(desktop) {
-    width: $logo-width-desktop;
-    margin-left: -$logo-width-desktop;
-  }
-
 }
 
 .sidebar {

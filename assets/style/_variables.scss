@@ -61,6 +61,16 @@ $btn-property: (
 
   // sidebar
   --sidebar-board-padding-inline: 24px;
+
+  // logo
+  --logo-width: auto;
+  @include media-breakpoint(tablet) {
+    --logo-width: #{$logo-width-tablet};
+  }
+
+  @include media-breakpoint(desktop) {
+    --logo-width: #{$logo-width-desktop};
+  }
 }
 
 [data-theme="dark"] {
