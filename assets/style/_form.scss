@@ -16,7 +16,7 @@
     align-items: center;
     position: relative;
 
-    &:not(:first-child) {
+    &:not(:first-of-type) {
       margin-top: 12px;
     }
 

@@ -78,6 +78,11 @@ function close() {
   }
 }
 
+.modal-header {
+  display: flex;
+  align-items: center;
+}
+
 .modal-footer {
   padding-top: 24px;
 }

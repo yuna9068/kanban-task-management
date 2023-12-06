@@ -11,7 +11,7 @@ interface Props {
   selectList?: string[]
   subtask?: Subtask[]
   type: FormItemType
-  placeholder: string
+  placeholder?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,7 +36,7 @@ const emits = defineEmits([
 
 const { single, column, textarea, select, subtask } = useVModels(props, emits)
 
-const renderTag = computed(() => props.type === 'select' ? 'div' : 'label')
+const renderTag = computed(() => (props.type === 'select' || props.type === 'checkbox') ? 'div' : 'label')
 
 /**
  * 判斷要渲染哪種元件，需類型相符且有值
@@ -93,6 +93,14 @@ function removeValue(idx: number) {
             :placeholder="placeholder"
             :deletable="true"
             @remove="removeValue(idx)"
+          />
+        </template>
+      </template>
+
+      <template v-if="renderItem('checkbox')">
+        <template v-for="(item, idx) in subtask" :key="idx">
+          <BaseCheckbox
+            v-model="subtask[idx]"
           />
         </template>
       </template>

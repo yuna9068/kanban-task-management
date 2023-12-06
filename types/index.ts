@@ -1,6 +1,6 @@
 export type Operation = 'create' | 'edit'
 export type AlertType = 'board' | 'task'
-export type FormItemType = 'single' | 'column' | 'textarea' | 'select' | 'subtask'
+export type FormItemType = 'single' | 'column' | 'textarea' | 'select' | 'subtask' | 'checkbox'
 
 export interface Subtask {
   title: string
