@@ -8,7 +8,7 @@
       <BoardIndex class="main-board" />
     </main>
     <BoardModal />
-    <TaskModal />
+    <TaskEditModal />
     <BaseModalAlert />
   </div>
 </template>

@@ -12,7 +12,7 @@ const sidebarStore = useSidebarStore()
 const { openModalBoard } = boardStore
 const { getBoard } = storeToRefs(boardStore)
 const { openModalAlert } = alertStore
-const { openModalTask } = taskStore
+const { openModalTaskEdit } = taskStore
 const { toggleSidebar } = sidebarStore
 const { getSidebarDisplay } = storeToRefs(sidebarStore)
 
@@ -49,7 +49,7 @@ function toggleBoards() {
 }
 
 function addTask() {
-  openModalTask('create')
+  openModalTaskEdit('create')
 }
 
 /**

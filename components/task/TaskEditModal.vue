@@ -2,10 +2,10 @@
 import type { Task } from '@/types'
 
 const taskStore = useTaskStore()
-const { createTask, editTask, closeModalTask } = taskStore
-const { getTask, getModalTaskInfo } = storeToRefs(taskStore)
+const { createTask, editTask, closeModalTaskEdit } = taskStore
+const { getTask, getModalTaskEdit } = storeToRefs(taskStore)
 
-const isEdit = computed(() => getModalTaskInfo.value.type === 'edit')
+const isEdit = computed(() => getModalTaskEdit.value.type === 'edit')
 const title = computed(() => isEdit.value ? 'Edit Task' : 'Add New Task')
 
 const task: Ref<Task> = ref({
@@ -37,7 +37,7 @@ function initialData() {
     task.value = {
       title: '',
       description: '',
-      status: getModalTaskInfo.value.columns[0],
+      status: getModalTaskEdit.value.columns[0],
       subtasks: [
         {
           title: '',
@@ -78,7 +78,7 @@ function create() {
     createTask(task.value)
 }
 
-watch(() => getModalTaskInfo.value.display, (newValue) => {
+watch(() => getModalTaskEdit.value.display, (newValue) => {
   if (newValue)
     initialData()
 })
@@ -87,9 +87,9 @@ watch(() => getModalTaskInfo.value.display, (newValue) => {
 <template>
   <BaseModal
     type="task"
-    :display="getModalTaskInfo.display"
+    :display="getModalTaskEdit.display"
     :title="title"
-    @close="closeModalTask"
+    @close="closeModalTaskEdit()"
   >
     <template #body>
       <BaseFormItem
@@ -119,7 +119,7 @@ watch(() => getModalTaskInfo.value.display, (newValue) => {
 
       <BaseFormItem
         v-model:select="task.status"
-        :select-list="getModalTaskInfo.columns"
+        :select-list="getModalTaskEdit.columns"
         type="select"
         label="Status"
         placeholder="Please select"

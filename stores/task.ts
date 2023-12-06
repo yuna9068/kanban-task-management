@@ -7,7 +7,7 @@ export const useTaskStore = defineStore('task', () => {
   const taskList: Ref<Task[]> = ref([])
   const selectedColumnIdx = ref(0)
   const selectedTaskIdx = ref(0)
-  const modal = ref({
+  const modalTaskEdit = ref({
     display: false,
     type: '',
     columns: computed(() => boardList.value[selectedBoardIdx.value].columns.map(item => item.name)),
@@ -15,33 +15,22 @@ export const useTaskStore = defineStore('task', () => {
 
   const getTaskList = computed(() => taskList.value)
   const getTask = computed(() => taskList.value[selectedTaskIdx.value])
-  const getModalTaskInfo = computed(() => modal.value)
+  const getModalTaskEdit = computed(() => modalTaskEdit.value)
 
   /**
-   * 開啟任務 Modal
+   * 開啟任務編輯 Modal
    * @param type create 新增 | edit 編輯
-   * @param columnIdx 若為 edit 編輯，須傳選擇的欄位 index
-   * @param taskIdx 若為 edit 編輯，須傳選擇的任務 index
    */
-  function openModalTask(type: Operation, columnIdx?: number, taskIdx?: number) {
-    if (
-      type === 'edit'
-      && typeof columnIdx === 'number'
-      && typeof taskIdx === 'number'
-    ) {
-      taskList.value = boardList.value[selectedBoardIdx.value].columns[columnIdx].tasks
-      selectedColumnIdx.value = columnIdx
-      selectedTaskIdx.value = taskIdx
-    }
-    modal.value.type = type
-    modal.value.display = true
+  function openModalTaskEdit(type: Operation) {
+    modalTaskEdit.value.type = type
+    modalTaskEdit.value.display = true
   }
 
   /**
-   * 關閉任務 Modal
+   * 關閉任務編輯 Modal
    */
-  function closeModalTask() {
-    modal.value.display = false
+  function closeModalTaskEdit() {
+    modalTaskEdit.value.display = false
   }
 
   /**
@@ -53,7 +42,7 @@ export const useTaskStore = defineStore('task', () => {
     const columnIdx = boardList.value[selectedBoardIdx.value].columns.findIndex(item => item.name === column)
     boardList.value[selectedBoardIdx.value].columns[columnIdx].tasks.push(newTask)
 
-    closeModalTask()
+    closeModalTaskEdit()
   }
 
   /**
@@ -80,15 +69,15 @@ export const useTaskStore = defineStore('task', () => {
       boardList.value[selectedBoardIdx.value].columns[newColumnIdx].tasks.push(newTask)
     }
 
-    closeModalTask()
+    closeModalTaskEdit()
   }
 
   return {
     getTaskList,
     getTask,
-    getModalTaskInfo,
-    openModalTask,
-    closeModalTask,
+    getModalTaskEdit,
+    openModalTaskEdit,
+    closeModalTaskEdit,
     createTask,
     editTask,
     deleteTask,
