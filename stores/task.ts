@@ -2,14 +2,14 @@ import type { Operation, Task } from '@/types'
 
 export const useTaskStore = defineStore('task', () => {
   const boardStore = useBoardStore()
+  const { updateSelected } = boardStore
   const {
     boardList,
-    selectedBoardIdx,
+    getBoard,
+    getSelected,
     getBoardColumnsNameList,
   } = storeToRefs(boardStore)
 
-  const selectedColumnIdx = ref(0)
-  const selectedTaskIdx = ref(0)
   const modalTaskEdit = ref({
     display: false,
     type: '',
@@ -35,7 +35,7 @@ export const useTaskStore = defineStore('task', () => {
   }))
   const getTask = computed(() =>
     (
-      boardList.value[selectedBoardIdx.value].columns[selectedColumnIdx.value]?.tasks[selectedTaskIdx.value]
+      getBoard.value.columns[getSelected.value.columnIdx]?.tasks[getSelected.value.taskIdx]
       ?? getEmptyTask.value
     ),
   )
@@ -48,8 +48,7 @@ export const useTaskStore = defineStore('task', () => {
    * @param taskIdx 任務 index
    */
   function openModalTaskDetail(columnIdx: number, taskIdx: number) {
-    selectedColumnIdx.value = columnIdx
-    selectedTaskIdx.value = taskIdx
+    updateSelected({ columnIdx, taskIdx })
     modalTaskDetail.value.display = true
   }
 
@@ -82,9 +81,11 @@ export const useTaskStore = defineStore('task', () => {
    * @param newTask 任務資訊
    */
   function createTask(newTask: Task) {
-    const column = newTask.status
-    const columnIdx = boardList.value[selectedBoardIdx.value].columns.findIndex(item => item.name === column)
-    boardList.value[selectedBoardIdx.value].columns[columnIdx].tasks.push(newTask)
+    const columnIdx = getBoard.value.columns.findIndex(item => item.name === newTask.status)
+    boardList.value[getSelected.value.boardIdx].columns[columnIdx].tasks.push(newTask)
+
+    const taskIdx = getBoard.value.columns[columnIdx].tasks.length - 1
+    updateSelected({ columnIdx, taskIdx })
 
     closeModalTaskEdit()
   }
@@ -93,7 +94,9 @@ export const useTaskStore = defineStore('task', () => {
    * 刪除目前查看的任務
    */
   function deleteTask() {
-    boardList.value[selectedBoardIdx.value].columns[selectedColumnIdx.value].tasks.splice(selectedTaskIdx.value, 1)
+    boardList.value[getSelected.value.boardIdx]
+      .columns[getSelected.value.columnIdx]
+      .tasks.splice(getSelected.value.taskIdx, 1)
   }
 
   /**
@@ -101,25 +104,17 @@ export const useTaskStore = defineStore('task', () => {
    * @param newTask 任務資訊
    */
   function editTask(newTask: Task) {
-    const selectedColumnName = boardList.value[selectedBoardIdx.value].columns[selectedColumnIdx.value].name
-    let newTaskColumnName = newTask.status
+    const selectedColumnName = getBoard.value.columns[getSelected.value.columnIdx].name
 
-    // 若 status 無值，則填入目前欄位名稱
-    if (!newTaskColumnName) {
-      newTaskColumnName = selectedColumnName
-      newTask.status = selectedColumnName
-    }
+    if (selectedColumnName === newTask.status) {
+      boardList.value[getSelected.value.boardIdx].columns[getSelected.value.columnIdx].tasks[getSelected.value.taskIdx] = newTask
 
-    if (selectedColumnName === newTaskColumnName) {
-      boardList.value[selectedBoardIdx.value].columns[selectedColumnIdx.value].tasks[selectedTaskIdx.value] = newTask
+      closeModalTaskEdit()
     }
     else {
       deleteTask()
-      const newColumnIdx = boardList.value[selectedBoardIdx.value].columns.findIndex(column => column.name === newTaskColumnName)
-      boardList.value[selectedBoardIdx.value].columns[newColumnIdx].tasks.push(newTask)
+      createTask(newTask)
     }
-
-    closeModalTaskEdit()
   }
 
   return {

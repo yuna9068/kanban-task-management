@@ -1,20 +1,21 @@
 <script lang="ts" setup>
-import type { Column } from '@/types'
+import { useCloned } from '@vueuse/core'
 
 const boardStore = useBoardStore()
 const { createBoard, editBoard, closeModalBoard } = boardStore
-const { getBoard, getModalBoardInfo } = storeToRefs(boardStore)
+const { getEmptyBoard, getBoard, getModalBoardInfo } = storeToRefs(boardStore)
 
 const isEdit = computed(() => getModalBoardInfo.value.type === 'edit')
 const title = computed(() => isEdit.value ? 'Edit Board' : 'Add New Board')
-const boardName = ref('')
-const boardColumns: Ref<Column[]> = ref([])
+const saveBtnText = computed(() => isEdit.value ? 'Save Changes' : 'Create New Board')
+
+const { cloned: board, sync } = useCloned(getEmptyBoard)
 
 /**
  * 驗證表單資料是否皆有值，有值才可點擊 footer 區塊的按鈕
  */
 const validateStatus = computed(() => (
-  boardName.value.length > 0 && boardColumns.value.every(item => item.name.length > 0)
+  board.value.name.length > 0 && board.value.columns.every(item => item.name.length > 0)
 ))
 
 /**
@@ -24,18 +25,14 @@ const validateStatus = computed(() => (
  */
 function initialData() {
   if (isEdit.value) {
-    boardName.value = getBoard.value.name
-    boardColumns.value = [...getBoard.value.columns]
+    const { cloned: selectedBoard } = useCloned(getBoard)
+    board.value = selectedBoard.value
 
-    if (getModalBoardInfo.value.newColumn)
+    if (getModalBoardInfo.value.addNewColumn)
       addColumn()
   }
   else {
-    boardName.value = ''
-    boardColumns.value = [
-      { name: 'Todo', tasks: [] },
-      { name: 'Doing', tasks: [] },
-    ]
+    sync()
   }
 }
 
@@ -43,23 +40,19 @@ function initialData() {
  * 新增欄位輸入框
  */
 function addColumn() {
-  boardColumns.value.push({ name: '', tasks: [] })
+  board.value.columns.push({ name: '', tasks: [] })
 }
 
 /**
- * 若通過表單驗證，則更新目前查看的看板資料
+ * 若通過表單驗證，則更新 / 新增看板資料
  */
-function edit() {
-  if (validateStatus.value)
-    editBoard(boardName.value, boardColumns.value)
-}
-
-/**
- * 若通過表單驗證，則新增看板資料
- */
-function create() {
-  if (validateStatus.value)
-    createBoard(boardName.value, boardColumns.value)
+function save() {
+  if (validateStatus.value) {
+    if (isEdit.value)
+      editBoard(board.value)
+    else
+      createBoard(board.value)
+  }
 }
 
 watch(() => getModalBoardInfo.value.display, (newValue) => {
@@ -77,14 +70,14 @@ watch(() => getModalBoardInfo.value.display, (newValue) => {
   >
     <template #body>
       <BaseFormItem
-        v-model:single="boardName"
+        v-model:single="board.name"
         type="single"
         label="Board Name"
         placeholder="e.g. Web Design"
       />
 
       <BaseFormItem
-        v-model:column="boardColumns"
+        v-model:column="board.columns"
         type="column"
         label="Board Columns"
         placeholder="e.g. Todo"
@@ -97,20 +90,11 @@ watch(() => getModalBoardInfo.value.display, (newValue) => {
 
     <template #footer>
       <button
-        v-if="isEdit"
         class="btn-primary"
         :disabled="!validateStatus"
-        @click="edit()"
+        @click="save()"
       >
-        Save Changes
-      </button>
-      <button
-        v-else
-        class="btn-primary"
-        :disabled="!validateStatus"
-        @click="create()"
-      >
-        Create New Board
+        {{ saveBtnText }}
       </button>
     </template>
   </BaseModal>

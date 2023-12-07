@@ -1,23 +1,23 @@
 <script lang="ts" setup>
 const boardStore = useBoardStore()
 const sidebarStore = useSidebarStore()
-const { openModalBoard, switchBoard } = boardStore
+const { openModalBoard, updateSelected } = boardStore
 const { toggleSidebar } = sidebarStore
-const { getBoardList, selectedBoardIdx } = storeToRefs(boardStore)
+const { getBoardList, getSelected } = storeToRefs(boardStore)
 
 const { isMobile } = useDevice()
 
 const sum = computed(() => getBoardList.value.length)
 
 function isSelected(idx: number) {
-  return idx === selectedBoardIdx.value
+  return idx === getSelected.value.boardIdx
 }
 
 function selectBoard(idx: number) {
   if (isMobile.value)
     toggleSidebar(false)
 
-  switchBoard(idx)
+  updateSelected({ boardIdx: idx })
 }
 
 function createBoard() {

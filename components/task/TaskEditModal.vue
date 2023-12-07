@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useCloned } from '@vueuse/core'
-import type { Task } from '@/types'
 
 const boardStore = useBoardStore()
 const taskStore = useTaskStore()
@@ -10,10 +9,9 @@ const { getEmptyTask, getTask, getModalTaskEdit } = storeToRefs(taskStore)
 
 const isEdit = computed(() => getModalTaskEdit.value.type === 'edit')
 const title = computed(() => isEdit.value ? 'Edit Task' : 'Add New Task')
+const saveBtnText = computed(() => isEdit.value ? 'Save Changes' : 'Create Task')
 
-const { cloned: emptyTask } = useCloned(getEmptyTask)
-
-const task: Ref<Task> = ref(emptyTask.value)
+const { cloned: task, sync } = useCloned(getEmptyTask)
 
 /**
  * 驗證表單資料是否皆有值，有值才可點擊 footer 區塊的按鈕
@@ -35,7 +33,7 @@ function initialData() {
     task.value = selectedTask.value
   }
   else {
-    task.value = emptyTask.value
+    sync()
   }
 }
 
@@ -50,19 +48,15 @@ function addSubtask() {
 }
 
 /**
- * 若通過表單驗證，則更新目前查看的任務資料
+ * 若通過表單驗證，則更新 / 新增任務資料
  */
-function edit() {
-  if (validateStatus.value)
-    editTask(task.value)
-}
-
-/**
- * 若通過表單驗證，則新增任務資料
- */
-function create() {
-  if (validateStatus.value)
-    createTask(task.value)
+function save() {
+  if (validateStatus.value) {
+    if (isEdit.value)
+      editTask(task.value)
+    else
+      createTask(task.value)
+  }
 }
 
 watch(() => getModalTaskEdit.value.display, (newValue) => {
@@ -115,20 +109,11 @@ watch(() => getModalTaskEdit.value.display, (newValue) => {
 
     <template #footer>
       <button
-        v-if="isEdit"
         class="btn-primary"
         :disabled="!validateStatus"
-        @click="edit()"
+        @click="save()"
       >
-        Save Changes
-      </button>
-      <button
-        v-else
-        class="btn-primary"
-        :disabled="!validateStatus"
-        @click="create()"
-      >
-        Create Task
+        {{ saveBtnText }}
       </button>
     </template>
   </BaseModal>
