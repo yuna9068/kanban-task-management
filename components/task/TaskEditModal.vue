@@ -1,19 +1,19 @@
 <script lang="ts" setup>
+import { useCloned } from '@vueuse/core'
 import type { Task } from '@/types'
 
+const boardStore = useBoardStore()
 const taskStore = useTaskStore()
 const { createTask, editTask, closeModalTaskEdit } = taskStore
-const { getTask, getModalTaskEdit } = storeToRefs(taskStore)
+const { getBoardColumnsNameList } = storeToRefs(boardStore)
+const { getEmptyTask, getTask, getModalTaskEdit } = storeToRefs(taskStore)
 
 const isEdit = computed(() => getModalTaskEdit.value.type === 'edit')
 const title = computed(() => isEdit.value ? 'Edit Task' : 'Add New Task')
 
-const task: Ref<Task> = ref({
-  title: '',
-  description: '',
-  status: '',
-  subtasks: [],
-})
+const { cloned: emptyTask } = useCloned(getEmptyTask)
+
+const task: Ref<Task> = ref(emptyTask.value)
 
 /**
  * 驗證表單資料是否皆有值，有值才可點擊 footer 區塊的按鈕
@@ -31,24 +31,11 @@ const validateStatus = computed(() => (
  */
 function initialData() {
   if (isEdit.value) {
-    task.value = JSON.parse(JSON.stringify(getTask.value))
+    const { cloned: selectedTask } = useCloned(getTask)
+    task.value = selectedTask.value
   }
   else {
-    task.value = {
-      title: '',
-      description: '',
-      status: getModalTaskEdit.value.columns[0],
-      subtasks: [
-        {
-          title: '',
-          isCompleted: false,
-        },
-        {
-          title: '',
-          isCompleted: false,
-        },
-      ],
-    }
+    task.value = emptyTask.value
   }
 }
 
@@ -119,7 +106,7 @@ watch(() => getModalTaskEdit.value.display, (newValue) => {
 
       <BaseFormItem
         v-model:select="task.status"
-        :select-list="getModalTaskEdit.columns"
+        :select-list="getBoardColumnsNameList"
         type="select"
         label="Status"
         placeholder="Please select"

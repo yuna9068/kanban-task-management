@@ -2,7 +2,7 @@
 const boardStore = useBoardStore()
 const { getBoard } = storeToRefs(boardStore)
 
-const isColumnEmpty = computed(() => !getBoard.value.columns.length)
+const hasColumn = computed(() => getBoard.value.columns.length)
 
 /**
  * 隨機產生 0 ~ 255 之間的數值
@@ -27,22 +27,22 @@ function circleColor(idx: number) {
       {{ getBoard.name }}
     </h3>
 
-    <BoardColumnEmpty v-if="isColumnEmpty" />
-
-    <template v-else>
+    <template v-if="hasColumn">
       <ul class="list">
         <li
           v-for="(column, idx) in getBoard.columns"
           :key="column.name"
           class="item"
         >
-          <BoardColumn :column="column" :color="circleColor(idx)" />
+          <BoardColumn :column="column" :column-idx="idx" :color="circleColor(idx)" />
         </li>
         <li>
           <BoardColumn :create="true" />
         </li>
       </ul>
     </template>
+
+    <BoardColumnEmpty v-else />
   </section>
 </template>
 
@@ -55,7 +55,6 @@ function circleColor(idx: number) {
 .list {
   display: flex;
   gap: 24px;
-  height: 100%;
-  overflow: scroll;
+  min-height: 100%;
 }
 </style>

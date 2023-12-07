@@ -12,6 +12,7 @@ export const useBoardStore = defineStore('board', () => {
 
   const getBoardList = computed(() => boardList.value)
   const getBoard = computed(() => boardList.value[selectedBoardIdx.value])
+  const getBoardColumnsNameList = computed(() => getBoard.value.columns.map(item => item.name))
   const getModalBoardInfo = computed(() => modal.value)
 
   /**
@@ -95,6 +96,7 @@ export const useBoardStore = defineStore('board', () => {
     selectedBoardIdx,
     getBoardList,
     getBoard,
+    getBoardColumnsNameList,
     getModalBoardInfo,
     openModalBoard,
     closeModalBoard,

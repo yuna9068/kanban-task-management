@@ -3,18 +3,29 @@ import type { Column } from '@/types'
 
 interface Props {
   column?: Column
+  columnIdx?: number
   color?: string
   create?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  column: () => ({}),
+  column: () => ({ name: '', tasks: [] }),
   color: '#635FC7',
   create: false,
 })
 
 const boardStore = useBoardStore()
+const taskStore = useTaskStore()
 const { addNewColumn } = boardStore
+const { openModalTaskDetail } = taskStore
+
+/**
+ * 開啟任務詳情 Modal
+ */
+function viewTaskDetail(taskIdx: number) {
+  if (typeof props.columnIdx === 'number' && typeof taskIdx === 'number')
+    openModalTaskDetail(props.columnIdx, taskIdx)
+}
 </script>
 
 <template>
@@ -43,9 +54,10 @@ const { addNewColumn } = boardStore
       class="column-list"
     >
       <li
-        v-for="task in column.tasks"
+        v-for="(task, idx) in column.tasks"
         :key="task.title"
         class="column-item"
+        @click="viewTaskDetail(idx)"
       >
         <TaskCard :task="task" />
       </li>

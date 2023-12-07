@@ -9,6 +9,7 @@
     </main>
     <BoardModal />
     <TaskEditModal />
+    <TaskDetailModal />
     <BaseModalAlert />
   </div>
 </template>
