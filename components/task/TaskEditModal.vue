@@ -3,24 +3,24 @@ import { useCloned } from '@vueuse/core'
 
 const boardStore = useBoardStore()
 const taskStore = useTaskStore()
-const { createTask, editTask, closeModalTaskEdit } = taskStore
+const {
+  createTask,
+  editTask,
+  closeModalTaskEdit,
+  validateTaskTitle,
+  validateSubtaskTitle,
+} = taskStore
 const { getBoardColumnsNameList } = storeToRefs(boardStore)
 const { getEmptyTask, getTask, getModalTaskEdit } = storeToRefs(taskStore)
+
+const validateStatus = ref(true)
 
 const isEdit = computed(() => getModalTaskEdit.value.type === 'edit')
 const title = computed(() => isEdit.value ? 'Edit Task' : 'Add New Task')
 const saveBtnText = computed(() => isEdit.value ? 'Save Changes' : 'Create Task')
 
 const { cloned: task, sync } = useCloned(getEmptyTask)
-
-/**
- * 驗證表單資料是否皆有值，有值才可點擊 footer 區塊的按鈕
- */
-const validateStatus = computed(() => (
-  task.value.title
-  && task.value.status
-  && task.value.subtasks.every(item => item.title)
-))
+const subtasksTitle = computed(() => task.value.subtasks.map(subtask => subtask.title))
 
 /**
  * 初始化表單資料
@@ -59,9 +59,24 @@ function save() {
   }
 }
 
+/**
+ * 檢查任務及子任務名稱，通過才可點擊 footer 區塊的按鈕
+ */
+function validate() {
+  const checkLength = task.value.title.length > 0 && task.value.status.length > 0 && subtasksTitle.value.every(title => title.length > 0)
+  const checkTask = validateTaskTitle(task.value.title, isEdit.value).status
+  const checkSubtasks = validateSubtaskTitle(task.value.subtasks).status
+
+  validateStatus.value = checkLength && checkTask && checkSubtasks
+}
+
 watch(() => getModalTaskEdit.value.display, (newValue) => {
   if (newValue)
     initialData()
+})
+
+watch([() => task.value.title, () => subtasksTitle.value], () => {
+  validate()
 })
 </script>
 
@@ -78,6 +93,8 @@ watch(() => getModalTaskEdit.value.display, (newValue) => {
         type="single"
         label="Title"
         placeholder="e.g. Take coffee break"
+        :validate="validateTaskTitle"
+        :edit="isEdit"
       />
 
       <BaseFormItem
@@ -92,6 +109,7 @@ watch(() => getModalTaskEdit.value.display, (newValue) => {
         type="subtask"
         label="Subtasks"
         placeholder="e.g. Make coffee"
+        :validate="validateSubtaskTitle"
       />
 
       <button class="btn-secondary" @click="addSubtask()">

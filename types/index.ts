@@ -1,6 +1,12 @@
 export type Operation = 'create' | 'edit'
 export type AlertType = 'board' | 'task'
 export type FormItemType = 'single' | 'column' | 'textarea' | 'select' | 'subtask' | 'checkbox'
+export type ValidateType = 'board' | 'column' | 'task' | 'subtask'
+
+export interface ValidateResult {
+  status: boolean
+  msg: string
+}
 
 export interface Subtask {
   title: string

@@ -2,21 +2,23 @@
 import { useCloned } from '@vueuse/core'
 
 const boardStore = useBoardStore()
-const { createBoard, editBoard, closeModalBoard } = boardStore
+const {
+  createBoard,
+  editBoard,
+  closeModalBoard,
+  validateBoardName,
+  validateColumnName,
+} = boardStore
 const { getEmptyBoard, getBoard, getModalBoardInfo } = storeToRefs(boardStore)
+
+const validateStatus = ref(true)
 
 const isEdit = computed(() => getModalBoardInfo.value.type === 'edit')
 const title = computed(() => isEdit.value ? 'Edit Board' : 'Add New Board')
 const saveBtnText = computed(() => isEdit.value ? 'Save Changes' : 'Create New Board')
 
 const { cloned: board, sync } = useCloned(getEmptyBoard)
-
-/**
- * 驗證表單資料是否皆有值，有值才可點擊 footer 區塊的按鈕
- */
-const validateStatus = computed(() => (
-  board.value.name.length > 0 && board.value.columns.every(item => item.name.length > 0)
-))
+const columnsName = computed(() => board.value.columns.map(column => column.name))
 
 /**
  * 初始化表單資料
@@ -55,9 +57,24 @@ function save() {
   }
 }
 
+/**
+ * 檢查看板及欄位名稱，通過才可點擊 footer 區塊的按鈕
+ */
+function validate() {
+  const checkLength = board.value.name.length > 0 && columnsName.value.every(name => name.length > 0)
+  const checkBoard = validateBoardName(board.value.name, isEdit.value).status
+  const checkColumns = validateColumnName(board.value.columns).status
+
+  validateStatus.value = checkLength && checkBoard && checkColumns
+}
+
 watch(() => getModalBoardInfo.value.display, (newValue) => {
   if (newValue)
     initialData()
+})
+
+watch([() => board.value.name, () => columnsName.value], () => {
+  validate()
 })
 </script>
 
@@ -74,6 +91,8 @@ watch(() => getModalBoardInfo.value.display, (newValue) => {
         type="single"
         label="Board Name"
         placeholder="e.g. Web Design"
+        :validate="validateBoardName"
+        :edit="isEdit"
       />
 
       <BaseFormItem
@@ -81,6 +100,7 @@ watch(() => getModalBoardInfo.value.display, (newValue) => {
         type="column"
         label="Board Columns"
         placeholder="e.g. Todo"
+        :validate="validateColumnName"
       />
 
       <button class="btn-secondary" @click="addColumn()">

@@ -1,4 +1,4 @@
-import type { Operation, Task } from '@/types'
+import type { Operation, Subtask, Task, ValidateResult } from '@/types'
 
 export const useTaskStore = defineStore('task', () => {
   const boardStore = useBoardStore()
@@ -117,6 +117,46 @@ export const useTaskStore = defineStore('task', () => {
     }
   }
 
+  /**
+   * 檢查看板內的任務名稱是否重複命名
+   * @param inputValue 使用者輸入的值
+   * @returns {ValidateResult} 回傳驗證狀態及訊息。
+   *          status 為 true 代表通過驗證,
+   *          msg 訊息
+   */
+  function validateTaskTitle(inputValue: string, edit = true): ValidateResult {
+    const sourceTitle = getTask.value.title
+    let taskTitleList: string[] = []
+    getBoard.value.columns.forEach((column) => {
+      const titleList = column.tasks.map(task => task.title)
+      taskTitleList.push(...titleList)
+    })
+
+    if (edit)
+      taskTitleList = taskTitleList.filter(title => title !== sourceTitle)
+
+    const status = !taskTitleList.includes(inputValue)
+    const msg = status ? '' : 'Duplicate title'
+
+    return { status, msg }
+  }
+
+  /**
+   * 檢查任務內的子任務名稱是否重複命名
+   * @param list 使用者目前輸入的子任務名稱清單
+   * @returns {ValidateResult} 回傳驗證狀態及訊息。
+   *          status 為 true 代表通過驗證,
+   *          msg 訊息
+   */
+  function validateSubtaskTitle(list: Subtask[]): ValidateResult {
+    const subtasksTitle = list.map(item => item.title)
+    const duplicateList = subtasksTitle.filter((item, itemIdx) => subtasksTitle.indexOf(item) !== itemIdx)
+    const status = duplicateList.length < 1
+    const msg = status ? '' : 'Duplicate title'
+
+    return { status, msg }
+  }
+
   return {
     getEmptyTask,
     getTask,
@@ -129,5 +169,7 @@ export const useTaskStore = defineStore('task', () => {
     createTask,
     editTask,
     deleteTask,
+    validateTaskTitle,
+    validateSubtaskTitle,
   }
 })

@@ -1,5 +1,5 @@
 import initialData from '@/assets/data/boards.json'
-import type { Board, Operation } from '@/types'
+import type { Board, Column, Operation, ValidateResult } from '@/types'
 
 interface Selected {
   boardIdx: number
@@ -113,6 +113,42 @@ export const useBoardStore = defineStore('board', () => {
     openModalBoard('edit', true)
   }
 
+  /**
+   * 檢查看板名稱是否重複命名
+   * @param inputValue 使用者輸入的值
+   * @returns {ValidateResult} 回傳驗證狀態及訊息。
+   *          status 為 true 代表通過驗證,
+   *          msg 訊息
+   */
+  function validateBoardName(inputValue: string, edit = true): ValidateResult {
+    const sourceName = getBoard.value.name
+    let boardNameList = getBoardList.value.map(board => board.name)
+
+    if (edit)
+      boardNameList = boardNameList.filter(name => name !== sourceName)
+
+    const status = !boardNameList.includes(inputValue)
+    const msg = status ? '' : 'Duplicate name'
+
+    return { status, msg }
+  }
+
+  /**
+   * 檢查看板內的欄位名稱是否重複命名
+   * @param list 使用者目前輸入的欄位名稱清單
+   * @returns {ValidateResult} 回傳驗證狀態及訊息。
+   *          status 為 true 代表通過驗證,
+   *          msg 訊息
+   */
+  function validateColumnName(list: Column[]): ValidateResult {
+    const columnsName = list.map(item => item.name)
+    const duplicateList = columnsName.filter((item, itemIdx) => columnsName.indexOf(item) !== itemIdx)
+    const status = duplicateList.length < 1
+    const msg = status ? '' : 'Duplicate name'
+
+    return { status, msg }
+  }
+
   return {
     boardList,
     getEmptyBoard,
@@ -129,5 +165,7 @@ export const useBoardStore = defineStore('board', () => {
     deleteBoard,
     resetBoardData,
     addNewColumn,
+    validateBoardName,
+    validateColumnName,
   }
 })

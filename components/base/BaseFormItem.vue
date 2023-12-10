@@ -12,6 +12,8 @@ interface Props {
   subtask?: Subtask[]
   type: FormItemType
   placeholder?: string
+  validate?: Function
+  edit?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,6 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
   subtask: () => [],
   type: 'single',
   placeholder: '',
+  validate: () => {},
+  edit: true,
 })
 
 const emits = defineEmits([
@@ -70,6 +74,27 @@ function removeValue(idx: number) {
       break
   }
 }
+
+/**
+ * 檢查看板、任務名稱
+ */
+function validateSingle() {
+  return props.validate(single.value, props.edit)
+}
+
+/**
+ * 檢查欄位名稱
+ */
+function validateColumn() {
+  return props.validate(column.value)
+}
+
+/**
+ * 檢查子任務名稱
+ */
+function validateSubtask() {
+  return props.validate(subtask.value)
+}
 </script>
 
 <template>
@@ -83,6 +108,7 @@ function removeValue(idx: number) {
         <BaseInput
           v-model="single"
           :placeholder="placeholder"
+          :validate="validateSingle"
         />
       </template>
 
@@ -92,6 +118,7 @@ function removeValue(idx: number) {
             v-model="item.name"
             :placeholder="placeholder"
             :deletable="true"
+            :validate="validateColumn"
             @remove="removeValue(idx)"
           />
         </template>
@@ -111,6 +138,7 @@ function removeValue(idx: number) {
             v-model="item.title"
             :placeholder="placeholder"
             :deletable="true"
+            :validate="validateSubtask"
             @remove="removeValue(idx)"
           />
         </template>
