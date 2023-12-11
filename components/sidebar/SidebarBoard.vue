@@ -1,18 +1,28 @@
 <script lang="ts" setup>
 const boardStore = useBoardStore()
 const sidebarStore = useSidebarStore()
+const alertStore = useAlertStore()
 const { openModalBoard, updateSelected } = boardStore
 const { toggleSidebar } = sidebarStore
+const { openModalAlert } = alertStore
 const { getBoardList, getSelected } = storeToRefs(boardStore)
 
 const { isMobile } = useDevice()
 
 const sum = computed(() => getBoardList.value.length)
 
+/**
+ * 判斷是否為目前查看的看板
+ * @param idx 看板的 index
+ */
 function isSelected(idx: number) {
   return idx === getSelected.value.boardIdx
 }
 
+/**
+ * 選擇要查看的看板
+ * @param idx 欲查看的 index
+ */
 function selectBoard(idx: number) {
   if (isMobile.value)
     toggleSidebar(false)
@@ -20,11 +30,24 @@ function selectBoard(idx: number) {
   updateSelected({ boardIdx: idx })
 }
 
+/**
+ * 開啟看板 Modal 新增看板
+ */
 function createBoard() {
   if (isMobile.value)
     toggleSidebar(false)
 
   openModalBoard('create')
+}
+
+/**
+ * 使用者點擊 "Reset Board Data" 後開啟警告 Modal
+ */
+function resetData() {
+  if (isMobile.value)
+    toggleSidebar(false)
+
+  openModalAlert('reset', 'All')
 }
 </script>
 
@@ -52,6 +75,11 @@ function createBoard() {
           <button class="board-btn board-btn-create btn-lg btn-sidebar-board" @click="createBoard">
             <SvgoIconBoard class="board-btn-icon" />
             <span class="board-btn-text">+ Create New Board</span>
+          </button>
+
+          <button class="board-btn btn-lg btn-destructive" @click="resetData()">
+            <SvgoIconBoard class="board-btn-icon" />
+            <span class="board-btn-text">Reset Board Data</span>
           </button>
         </li>
       </ul>

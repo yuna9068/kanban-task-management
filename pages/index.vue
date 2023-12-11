@@ -1,9 +1,21 @@
 <script lang="ts" setup>
+import { useLocalStorage } from '@vueuse/core'
+import initialData from '@/assets/data/boards.json'
+
+const boardStore = useBoardStore()
+const { setBoardData } = boardStore
+const { getIsLoading } = storeToRefs(boardStore)
+
+onMounted(() => {
+  const storage = useLocalStorage('board', [...initialData.boards])
+  setBoardData(storage.value)
+})
 </script>
 
 <template>
   <div class="index">
-    <main class="main">
+    <BoardLoading v-if="getIsLoading" />
+    <main v-else class="main">
       <SidebarIndex />
       <BoardIndex class="main-board" />
     </main>

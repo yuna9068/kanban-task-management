@@ -8,7 +8,9 @@ interface Selected {
 }
 
 export const useBoardStore = defineStore('board', () => {
-  const boardList: Ref<Board[]> = ref([...initialData.boards])
+  const isLoading = ref(true)
+  const boardList: Ref<Board[]> = ref([{ name: '', columns: [] }])
+
   const selected: Ref<Selected> = ref({
     boardIdx: 0,
     columnIdx: 0,
@@ -20,6 +22,7 @@ export const useBoardStore = defineStore('board', () => {
     addNewColumn: false,
   })
 
+  const getIsLoading = computed(() => isLoading.value)
   const getEmptyBoard: Ref<Board> = computed(() => ({
     name: '',
     columns: [
@@ -100,10 +103,23 @@ export const useBoardStore = defineStore('board', () => {
   }
 
   /**
-   * 重置看板資料
+   * 設定看板資料，若未帶值則使用初始資料
+   * @param newData 欲設置的看板資料
    */
-  function resetBoardData() {
-    boardList.value = [...initialData.boards]
+  function setBoardData(newData?: Board[]) {
+    isLoading.value = true
+
+    if (newData?.length)
+      boardList.value = newData
+    else
+      boardList.value = [...initialData.boards]
+
+    updateSelected({
+      boardIdx: 0,
+      columnIdx: 0,
+      taskIdx: 0,
+    })
+    isLoading.value = false
   }
 
   /**
@@ -151,6 +167,7 @@ export const useBoardStore = defineStore('board', () => {
 
   return {
     boardList,
+    getIsLoading,
     getEmptyBoard,
     getBoardList,
     getBoard,
@@ -163,7 +180,7 @@ export const useBoardStore = defineStore('board', () => {
     createBoard,
     editBoard,
     deleteBoard,
-    resetBoardData,
+    setBoardData,
     addNewColumn,
     validateBoardName,
     validateColumnName,
