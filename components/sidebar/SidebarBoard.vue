@@ -59,10 +59,12 @@ function resetData() {
       </h2>
 
       <ul class="board-list">
-        <li class="board-item">
+        <li
+          v-for="(board, idx) in getBoardList"
+          :key="board.name"
+          class="board-item"
+        >
           <button
-            v-for="(board, idx) in getBoardList"
-            :key="board.name"
             class="board-btn btn-lg"
             :class="{ 'btn-primary': isSelected(idx), 'btn-sidebar-board': !isSelected(idx) }"
             :disabled="isSelected(idx)"
@@ -71,12 +73,16 @@ function resetData() {
             <SvgoIconBoard class="board-btn-icon" />
             <span class="board-btn-text">{{ board.name }}</span>
           </button>
+        </li>
 
+        <li class="board-item">
           <button class="board-btn board-btn-create btn-lg btn-sidebar-board" @click="createBoard">
             <SvgoIconBoard class="board-btn-icon" />
             <span class="board-btn-text">+ Create New Board</span>
           </button>
+        </li>
 
+        <li class="board-item">
           <button class="board-btn btn-lg btn-destructive" @click="resetData()">
             <SvgoIconBoard class="board-btn-icon" />
             <span class="board-btn-text">Reset Board Data</span>
