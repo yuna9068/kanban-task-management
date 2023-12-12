@@ -6,8 +6,13 @@ const boardStore = useBoardStore()
 const { setBoardData } = boardStore
 const { getIsLoading } = storeToRefs(boardStore)
 
+const storage = useLocalStorage('board', [...initialData.boards])
+
+boardStore.$subscribe((mutate, state) => {
+  storage.value = state.boardList
+})
+
 onMounted(() => {
-  const storage = useLocalStorage('board', [...initialData.boards])
   setBoardData(storage.value)
 })
 </script>

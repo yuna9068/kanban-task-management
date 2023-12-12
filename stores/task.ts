@@ -157,6 +157,25 @@ export const useTaskStore = defineStore('task', () => {
     return { status, msg }
   }
 
+  /**
+   * 針對指定欄位，將欄位名稱覆寫至其下所有任務的 status
+   * 若未提供欄位名稱，則遍歷目前查看看板的所有欄位
+   * @param columnName 欄位名稱
+   */
+  function syncTaskStatus(columnName?: string) {
+    const selectedBoard = boardList.value[getSelected.value.boardIdx]
+
+    if (columnName) {
+      const columnIdx = getBoard.value.columns.findIndex(item => item.name === columnName)
+      selectedBoard.columns[columnIdx].tasks.forEach(task => task.status = columnName)
+    }
+    else {
+      selectedBoard.columns.forEach((column) => {
+        column.tasks.forEach(task => task.status = column.name)
+      })
+    }
+  }
+
   return {
     getEmptyTask,
     getTask,
@@ -171,5 +190,6 @@ export const useTaskStore = defineStore('task', () => {
     deleteTask,
     validateTaskTitle,
     validateSubtaskTitle,
+    syncTaskStatus,
   }
 })

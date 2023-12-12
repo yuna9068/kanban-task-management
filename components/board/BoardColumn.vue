@@ -1,23 +1,31 @@
 <script lang="ts" setup>
+import { VueDraggable } from 'vue-draggable-plus'
+import type { SortableEvent } from 'sortablejs'
+import { useVModels } from '@vueuse/core'
 import type { Column } from '@/types'
 
 interface Props {
-  column?: Column
+  modelValue?: Column
   columnIdx?: number
   color?: string
   create?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  column: () => ({ name: '', tasks: [] }),
+  modelValue: () => ({ name: '', tasks: [] }),
+  columnIdx: 0,
   color: '#635FC7',
   create: false,
 })
 
+const emits = defineEmits(['update:modelValue'])
+
+const { modelValue } = useVModels(props, emits)
+
 const boardStore = useBoardStore()
 const taskStore = useTaskStore()
 const { addNewColumn } = boardStore
-const { openModalTaskDetail } = taskStore
+const { openModalTaskDetail, syncTaskStatus } = taskStore
 
 /**
  * 開啟任務詳情 Modal
@@ -25,6 +33,14 @@ const { openModalTaskDetail } = taskStore
 function viewTaskDetail(taskIdx: number) {
   if (typeof props.columnIdx === 'number' && typeof taskIdx === 'number')
     openModalTaskDetail(props.columnIdx, taskIdx)
+}
+
+/**
+ * 拖拉任務改變狀態時更新任務的 status 值
+ * @param event SortableEvent
+ */
+function dragAdd(event: SortableEvent) {
+  syncTaskStatus(event.to.dataset.column)
 }
 </script>
 
@@ -35,7 +51,7 @@ function viewTaskDetail(taskIdx: number) {
         v-if="!create"
         class="column-title-text"
       >
-        {{ column.name }}({{ column.tasks?.length }})
+        {{ modelValue.name }}({{ modelValue.tasks?.length }})
       </p>
     </h4>
 
@@ -49,19 +65,28 @@ function viewTaskDetail(taskIdx: number) {
       </p>
     </button>
 
-    <ul
+    <VueDraggable
       v-else
+      v-model="modelValue.tasks"
+      tag="ul"
       class="column-list"
+      group="tasks"
+      handle=".column-item"
+      :fallback-tolerance="5"
+      :data-column="modelValue.name"
+      @add="dragAdd"
     >
       <li
-        v-for="(task, idx) in column.tasks"
+        v-for="(task, idx) in modelValue.tasks"
         :key="task.title"
         class="column-item"
-        @click="viewTaskDetail(idx)"
       >
-        <TaskCard :task="task" />
+        <TaskCard
+          :task="task"
+          @click.stop="viewTaskDetail(idx)"
+        />
       </li>
-    </ul>
+    </VueDraggable>
   </section>
 </template>
 
@@ -77,6 +102,7 @@ function viewTaskDetail(taskIdx: number) {
 
     &-text {
       color: var(--text-secondary-color);
+      cursor: grab;
 
       &::before {
         content: "";

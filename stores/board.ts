@@ -3,6 +3,7 @@ import type { Board, Column, Operation, ValidateResult } from '@/types'
 
 interface Selected {
   boardIdx: number
+  boardName: string
   columnIdx: number
   taskIdx: number
 }
@@ -13,6 +14,7 @@ export const useBoardStore = defineStore('board', () => {
 
   const selected: Ref<Selected> = ref({
     boardIdx: 0,
+    boardName: '',
     columnIdx: 0,
     taskIdx: 0,
   })
@@ -44,8 +46,10 @@ export const useBoardStore = defineStore('board', () => {
    * @param selected.taskIdx 任務 index
    */
   function updateSelected({ boardIdx, columnIdx, taskIdx }: { boardIdx?: number; columnIdx?: number; taskIdx?: number }) {
-    if (typeof boardIdx === 'number')
+    if (typeof boardIdx === 'number') {
       selected.value.boardIdx = boardIdx
+      selected.value.boardName = getBoard.value.name
+    }
 
     if (typeof columnIdx === 'number')
       selected.value.columnIdx = columnIdx
@@ -94,12 +98,16 @@ export const useBoardStore = defineStore('board', () => {
   }
 
   /**
-   * 刪除目前查看的看板
+   * 刪除目前查看的看板，並更新選擇查看的看板 index
    */
   function deleteBoard() {
-    boardList.value.splice(selected.value.boardIdx, 1)
+    let selectedBoardIdx = selected.value.boardIdx
+    boardList.value.splice(selectedBoardIdx, 1)
+
     if (!getBoard.value)
-      updateSelected({ boardIdx: boardList.value.length - 1 })
+      selectedBoardIdx = boardList.value.length - 1
+
+    updateSelected({ boardIdx: selectedBoardIdx })
   }
 
   /**

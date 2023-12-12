@@ -1,11 +1,13 @@
 <script lang="ts" setup>
+import { VueDraggable } from 'vue-draggable-plus'
+
 const boardStore = useBoardStore()
 const sidebarStore = useSidebarStore()
 const alertStore = useAlertStore()
 const { openModalBoard, updateSelected } = boardStore
 const { toggleSidebar } = sidebarStore
 const { openModalAlert } = alertStore
-const { getBoardList, getSelected } = storeToRefs(boardStore)
+const { boardList, getBoardList, getSelected } = storeToRefs(boardStore)
 
 const { isMobile } = useDevice()
 
@@ -22,9 +24,10 @@ function isSelected(idx: number) {
 /**
  * 選擇要查看的看板
  * @param idx 欲查看的 index
+ * @param close 是否需要關閉 Sidebar, 若僅是變更看板排序則不用關閉
  */
-function selectBoard(idx: number) {
-  if (isMobile.value)
+function selectBoard(idx: number, close = true) {
+  if (isMobile.value && close)
     toggleSidebar(false)
 
   updateSelected({ boardIdx: idx })
@@ -49,6 +52,14 @@ function resetData() {
 
   openModalAlert('reset', 'All')
 }
+
+/**
+ * 變更看板排序後更新目前查看的 index，維持顯示使用者選取的看板內容，不因排序異動而變化
+ */
+function dragUpdate() {
+  const newSelectedIdx = getBoardList.value.findIndex(board => board.name === getSelected.value.boardName)
+  selectBoard(newSelectedIdx, false)
+}
 </script>
 
 <template>
@@ -58,11 +69,19 @@ function resetData() {
         ALL BOARDS ({{ sum }})
       </h2>
 
-      <ul class="board-list">
+      <VueDraggable
+        v-model="boardList"
+        tag="ul"
+        class="board-list"
+        group="sidebar"
+        handle=".board-btn-icon"
+        draggable=".board-item-draggable"
+        @update="dragUpdate"
+      >
         <li
           v-for="(board, idx) in getBoardList"
           :key="board.name"
-          class="board-item"
+          class="board-item board-item-draggable"
         >
           <button
             class="board-btn btn-lg"
@@ -88,7 +107,7 @@ function resetData() {
             <span class="board-btn-text">Reset Board Data</span>
           </button>
         </li>
-      </ul>
+      </VueDraggable>
     </div>
   </section>
 </template>
@@ -132,6 +151,10 @@ button[disabled] {
     width: 16px;
     height: 16px;
     margin-right: 12px;
+
+    @at-root .board-item-draggable & {
+      cursor: grab;
+    }
   }
 
   &-text {

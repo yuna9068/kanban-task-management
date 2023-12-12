@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { VueDraggable } from 'vue-draggable-plus'
+
 const boardStore = useBoardStore()
 const { getBoard } = storeToRefs(boardStore)
 
@@ -28,18 +30,28 @@ function circleColor(idx: number) {
     </h3>
 
     <template v-if="hasColumn">
-      <ul class="list">
+      <VueDraggable
+        v-model="getBoard.columns"
+        tag="ul"
+        class="list"
+        group="columns"
+        handle=".column-title-text"
+      >
         <li
           v-for="(column, idx) in getBoard.columns"
           :key="column.name"
           class="item"
         >
-          <BoardColumn :column="column" :column-idx="idx" :color="circleColor(idx)" />
+          <BoardColumn
+            v-model="getBoard.columns[idx]"
+            :column-idx="idx"
+            :color="circleColor(idx)"
+          />
         </li>
         <li>
           <BoardColumn :create="true" />
         </li>
-      </ul>
+      </VueDraggable>
     </template>
 
     <BoardColumnEmpty v-else />

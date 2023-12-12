@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VueDraggable } from 'vue-draggable-plus'
 import { useCloned, useToggle } from '@vueuse/core'
 
 const boardStore = useBoardStore()
@@ -90,11 +91,20 @@ function openAlert() {
         </p>
       </div>
 
-      <BaseFormItem
-        v-model:subtask="task.subtasks"
-        type="checkbox"
-        :label="subtasksLabel"
-      />
+      <VueDraggable
+        v-model="task.subtasks"
+        group="subtasks"
+        target=".form-item-label"
+        handle=".form-item-value-input"
+        draggable=".form-item-value"
+        :fallback-tolerance="5"
+      >
+        <BaseFormItem
+          v-model:subtask="task.subtasks"
+          type="checkbox"
+          :label="subtasksLabel"
+        />
+      </VueDraggable>
 
       <BaseFormItem
         v-model:select="task.status"
@@ -147,5 +157,9 @@ function openAlert() {
 
 .description {
   color: var(--text-secondary-color);
+}
+
+:deep(.item-text) {
+  cursor: grab;
 }
 </style>
