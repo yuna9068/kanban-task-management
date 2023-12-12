@@ -2,6 +2,8 @@
 const alertStore = useAlertStore()
 const { closeModalAlert, deleteItem } = alertStore
 const { getModalAlertInfo } = storeToRefs(alertStore)
+
+const btnDestructiveText = computed(() => getModalAlertInfo.value.type === 'reset' ? 'Reset' : 'Delete')
 </script>
 
 <template>
@@ -20,7 +22,7 @@ const { getModalAlertInfo } = storeToRefs(alertStore)
     <template #footer>
       <div class="alert-btn">
         <button class="btn-destructive" @click="deleteItem()">
-          Delete
+          {{ btnDestructiveText }}
         </button>
         <button class="btn-secondary" @click="closeModalAlert()">
           Cancel
