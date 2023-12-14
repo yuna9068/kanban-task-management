@@ -53,10 +53,9 @@ export const useTaskStore = defineStore('task', () => {
   }
 
   /**
-   * 關閉任務詳情 Modal，並更新任務詳情
+   * 關閉任務詳情 Modal
    */
-  function closeModalTaskDetail(newTask: Task) {
-    editTask(newTask)
+  function closeModalTaskDetail() {
     modalTaskDetail.value.display = false
   }
 

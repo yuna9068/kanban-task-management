@@ -8,6 +8,7 @@ const alertStore = useAlertStore()
 const {
   openModalTaskEdit,
   closeModalTaskDetail,
+  editTask,
   deleteTask,
 } = taskStore
 const { openModalAlert } = alertStore
@@ -32,11 +33,12 @@ const subtasksLabel = computed(() => {
 })
 
 /**
- * 關閉任務詳情 Modal 和 關閉操作看板下拉式選單
+ * 關閉任務詳情 Modal 和 關閉操作看板下拉式選單，並更新任務詳情
  */
 function closeModal() {
   toggleMenu(false)
-  closeModalTaskDetail(task.value)
+  editTask(task.value)
+  closeModalTaskDetail()
 }
 
 /**
