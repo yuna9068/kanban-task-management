@@ -5,7 +5,11 @@ import { useCloned, useToggle } from '@vueuse/core'
 const boardStore = useBoardStore()
 const taskStore = useTaskStore()
 const alertStore = useAlertStore()
-const { openModalTaskEdit, closeModalTaskDetail } = taskStore
+const {
+  openModalTaskEdit,
+  closeModalTaskDetail,
+  deleteTask,
+} = taskStore
 const { openModalAlert } = alertStore
 const { getBoardColumnsNameList } = storeToRefs(boardStore)
 const { getTask, getModalTaskDetail } = storeToRefs(taskStore)
@@ -48,7 +52,12 @@ function openTaskEdit() {
  */
 function openAlert() {
   closeModal()
-  openModalAlert('task', task.value.title)
+  openModalAlert({
+    title: 'Delete this task',
+    content: `Are you sure you want to delete the ‘${task.value.title}’ task and its subtasks? This action cannot be reversed.`,
+    destructiveText: 'Delete',
+    onDestructive: deleteTask,
+  })
 }
 </script>
 

@@ -9,7 +9,7 @@ const boardStore = useBoardStore()
 const alertStore = useAlertStore()
 const taskStore = useTaskStore()
 const sidebarStore = useSidebarStore()
-const { openModalBoard } = boardStore
+const { openModalBoard, deleteBoard } = boardStore
 const { getBoard } = storeToRefs(boardStore)
 const { openModalAlert } = alertStore
 const { openModalTaskEdit } = taskStore
@@ -71,7 +71,12 @@ function openBoard() {
  * 開啟警告 Modal
  */
 function openAlert() {
-  openModalAlert('board', title.value)
+  openModalAlert({
+    title: 'Delete this board',
+    content: `Are you sure you want to delete the ‘${title.value}’ board? This action will remove all columns and tasks and cannot be reversed.`,
+    destructiveText: 'Delete',
+    onDestructive: deleteBoard,
+  })
   closeMenu()
 }
 </script>

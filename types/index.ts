@@ -1,5 +1,4 @@
 export type Operation = 'create' | 'edit'
-export type AlertType = 'board' | 'task' | 'reset'
 export type FormItemType = 'single' | 'column' | 'textarea' | 'select' | 'subtask' | 'checkbox'
 export type ValidateType = 'board' | 'column' | 'task' | 'subtask'
 

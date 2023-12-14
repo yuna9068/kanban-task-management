@@ -4,7 +4,7 @@ import { VueDraggable } from 'vue-draggable-plus'
 const boardStore = useBoardStore()
 const sidebarStore = useSidebarStore()
 const alertStore = useAlertStore()
-const { openModalBoard, updateSelected } = boardStore
+const { openModalBoard, updateSelected, setBoardData } = boardStore
 const { closeSidebar } = sidebarStore
 const { openModalAlert } = alertStore
 const { boardList, getBoardList, getSelected } = storeToRefs(boardStore)
@@ -50,7 +50,12 @@ function resetData() {
   if (isMobile.value)
     closeSidebar()
 
-  openModalAlert('reset', 'All')
+  openModalAlert({
+    title: 'Reset Board Data',
+    content: 'Are you sure you want to reset board data? This action cannot be reversed.',
+    destructiveText: 'Reset',
+    onDestructive: setBoardData,
+  })
 }
 
 /**
