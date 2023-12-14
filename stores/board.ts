@@ -111,23 +111,28 @@ export const useBoardStore = defineStore('board', () => {
   }
 
   /**
-   * 設定看板資料，若未帶值則使用初始資料
+   * 設定看板資料
    * @param newData 欲設置的看板資料
    */
-  function setBoardData(newData?: Board[]) {
+  function setBoardData(newData: Board[]) {
     isLoading.value = true
 
-    if (newData?.length)
-      boardList.value = newData
-    else
-      boardList.value = [...initialData.boards]
+    boardList.value = newData
 
     updateSelected({
       boardIdx: 0,
       columnIdx: 0,
       taskIdx: 0,
     })
+
     isLoading.value = false
+  }
+
+  /**
+   * 重設看板資料
+   */
+  function resetBoard() {
+    setBoardData(initialData.boards)
   }
 
   /**
@@ -189,6 +194,7 @@ export const useBoardStore = defineStore('board', () => {
     editBoard,
     deleteBoard,
     setBoardData,
+    resetBoard,
     addNewColumn,
     validateBoardName,
     validateColumnName,
