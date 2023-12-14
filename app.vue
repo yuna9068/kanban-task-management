@@ -5,7 +5,7 @@
   <div class="app">
     <NuxtLayout>
       <HeaderIndex class="header" />
-      <NuxtPage class="page" />
+      <NuxtPage class="page" keepalive />
     </NuxtLayout>
   </div>
 </template>
