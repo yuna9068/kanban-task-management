@@ -34,6 +34,12 @@
   font-weight: 700;
 }
 
+@mixin text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 // button
 @mixin btn-lg {
   padding-block: 15px 14px;

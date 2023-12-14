@@ -49,6 +49,8 @@ function close() {
 .sidebar {
   $sidebarMarginBlock: 16px;
 
+  display: flex;
+  flex-direction: column;
   background: var(--primary-bg);
 
   @include media-mobile {
@@ -62,8 +64,6 @@ function close() {
   }
 
   @include media-breakpoint(tablet) {
-    display: flex;
-    flex-direction: column;
     height: 100%;
     padding-block: 32px;
     border-right: var(--border-primary);
@@ -74,6 +74,9 @@ function close() {
   }
 
   &-board {
+    flex: 1;
+    overflow: scroll;
+
     @include media-breakpoint(tablet) {
       margin-bottom: auto;
     }

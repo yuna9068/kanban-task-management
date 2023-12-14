@@ -128,11 +128,17 @@ function openAlert() {
 .header-main {
   display: flex;
   align-items: center;
+  min-height: 64px;
   padding: 16px 0;
   position: relative;
+
+  @include media-breakpoint(tablet) {
+    min-height: 80px;
+  }
 }
 
 .title {
+  flex: 1;
   cursor: pointer;
 
   @include media-breakpoint(tablet) {

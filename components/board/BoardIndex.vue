@@ -4,6 +4,8 @@ import { VueDraggable } from 'vue-draggable-plus'
 const boardStore = useBoardStore()
 const { getBoard } = storeToRefs(boardStore)
 
+const isDragging = ref(false)
+
 const hasColumn = computed(() => getBoard.value.columns.length)
 
 /**
@@ -21,6 +23,14 @@ function circleColor(idx: number) {
   const result = idx < list.length ? list[idx] : `rgb(${getRandomInt()}, ${getRandomInt()}, ${getRandomInt()})`
   return result
 }
+
+/**
+ * 拖拉欄位時不顯示欄位完整名稱
+ * @param dragging 是否正在進行拖拉
+ */
+function hidePopover(dragging: boolean) {
+  isDragging.value = dragging
+}
 </script>
 
 <template>
@@ -36,6 +46,8 @@ function circleColor(idx: number) {
         class="list"
         group="columns"
         handle=".column-title-text"
+        @start="hidePopover(true)"
+        @end="hidePopover(false)"
       >
         <li
           v-for="(column, idx) in getBoard.columns"
@@ -46,6 +58,7 @@ function circleColor(idx: number) {
             v-model="getBoard.columns[idx]"
             :column-idx="idx"
             :color="circleColor(idx)"
+            :is-dragging="isDragging"
           />
         </li>
         <li>

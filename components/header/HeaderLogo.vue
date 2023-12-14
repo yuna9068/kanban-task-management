@@ -12,10 +12,12 @@
 
 <style lang="scss" scoped>
 .header-logo {
-  padding: 20px 16px 19px;
+  display: flex;
+  align-items: center;
+  padding-inline: 16px;
 
   @include media-breakpoint(tablet) {
-    padding: 32.78px 0 0 26px;
+    padding-inline: 26px 0;
     border-right: var(--border-primary);
   }
 

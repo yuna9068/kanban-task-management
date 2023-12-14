@@ -139,9 +139,6 @@ button[disabled] {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
   &-create {
     color: $primary;

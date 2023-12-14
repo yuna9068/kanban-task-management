@@ -36,15 +36,14 @@ $btn-type: (
 
 .btn-dropdown-item {
   @include text-l;
+  @include text-ellipsis;
+
   display: block;
   width: 100%;
   padding: 8px 16px;
   background: var(--btn-dropdown-item-bg);
   color: var(--btn-dropdown-item-color);
   text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
   &:not([disabled]):hover {
     background: var(--btn-dropdown-item-bg-hover);

@@ -2,6 +2,7 @@
 import { VueDraggable } from 'vue-draggable-plus'
 import type { SortableEvent } from 'sortablejs'
 import { useVModels } from '@vueuse/core'
+import { vElementHover } from '@vueuse/components'
 import type { Column } from '@/types'
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
   columnIdx?: number
   color?: string
   create?: boolean
+  isDragging?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,6 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   columnIdx: 0,
   color: '#635FC7',
   create: false,
+  isDragging: false,
 })
 
 const emits = defineEmits(['update:modelValue'])
@@ -26,6 +29,8 @@ const boardStore = useBoardStore()
 const taskStore = useTaskStore()
 const { addNewColumn } = boardStore
 const { openModalTaskDetail, syncTaskStatus } = taskStore
+
+const displayFullName = ref(false)
 
 /**
  * 開啟任務詳情 Modal
@@ -42,6 +47,19 @@ function viewTaskDetail(taskIdx: number) {
 function dragAdd(event: SortableEvent) {
   syncTaskStatus(event.to.dataset.column)
 }
+
+/**
+ * 是否顯示欄位完整名稱
+ * @param state 顯示狀態
+ */
+function showFullColumnName(state: boolean) {
+  if (props.isDragging) {
+    displayFullName.value = false
+    return
+  }
+
+  displayFullName.value = state
+}
 </script>
 
 <template>
@@ -49,9 +67,17 @@ function dragAdd(event: SortableEvent) {
     <h4 class="column-title heading-s">
       <p
         v-if="!create"
+        v-element-hover="showFullColumnName"
         class="column-title-text"
       >
         {{ modelValue.name }}({{ modelValue.tasks?.length }})
+      </p>
+
+      <p
+        class="column-title-popover"
+        :class="{ 'column-title-popover--active': displayFullName }"
+      >
+        {{ modelValue.name }}
       </p>
     </h4>
 
@@ -101,6 +127,8 @@ function dragAdd(event: SortableEvent) {
     height: $title-height;
 
     &-text {
+      @include text-ellipsis;
+
       color: var(--text-secondary-color);
       cursor: grab;
 
@@ -113,6 +141,28 @@ function dragAdd(event: SortableEvent) {
         border-radius: 50%;
         background: v-bind('props.color');
         vertical-align: middle;
+      }
+    }
+
+    &-popover {
+      width: 80%;
+      margin: 0 auto;
+      padding: 8px 10px;
+      position: relative;
+      border-radius: 8px;
+      background: v-bind('props.color');
+      color: var(--primary-bg);
+      box-shadow: 0px 4px 6px 0px rgba(54, 78, 126, 0.10);
+      filter: saturate(1.2);
+      z-index: -1;
+      translate: 0 20px;
+      opacity: 0;
+      transition: all 0.3s;
+
+      &--active {
+        z-index: 10;
+        translate: 0 10px;
+        opacity: 1;
       }
     }
   }
