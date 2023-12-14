@@ -1,18 +1,14 @@
 <script lang="ts" setup>
 const sidebarStore = useSidebarStore()
-const { toggleSidebar } = sidebarStore
+const { closeSidebar } = sidebarStore
 const { getSidebarDisplay } = storeToRefs(sidebarStore)
-
-function close() {
-  toggleSidebar(false)
-}
 </script>
 
 <template>
   <div
     class="backdrop"
     :class="{ open: getSidebarDisplay }"
-    @click.self="close()"
+    @click.self="closeSidebar()"
   >
     <div class="sidebar">
       <SidebarBoard class="sidebar-board" />

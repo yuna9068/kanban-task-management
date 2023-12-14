@@ -7,8 +7,16 @@ export const useSidebarStore = defineStore('sidebar', () => {
 
   const toggleSidebar = useToggle(sidebarDisplay)
 
+  /**
+   * 關閉 Sidebar
+   */
+  function closeSidebar() {
+    toggleSidebar(false)
+  }
+
   return {
     getSidebarDisplay,
     toggleSidebar,
+    closeSidebar,
   }
 })

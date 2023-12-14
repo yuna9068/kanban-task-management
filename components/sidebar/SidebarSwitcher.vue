@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const sidebarStore = useSidebarStore()
-const { toggleSidebar } = sidebarStore
+const { toggleSidebar, closeSidebar } = sidebarStore
 const { getSidebarDisplay } = storeToRefs(sidebarStore)
 </script>
 
@@ -10,7 +10,7 @@ const { getSidebarDisplay } = storeToRefs(sidebarStore)
       <button
         v-show="getSidebarDisplay"
         class="switcher-hide-btn btn-lg btn-sidebar-board"
-        @click="toggleSidebar(false)"
+        @click="closeSidebar()"
       >
         <SvgoIconHideSidebar class="switcher-hide-btn-icon" />
         <p>Hide Sidebar</p>

@@ -5,7 +5,7 @@ const boardStore = useBoardStore()
 const sidebarStore = useSidebarStore()
 const alertStore = useAlertStore()
 const { openModalBoard, updateSelected } = boardStore
-const { toggleSidebar } = sidebarStore
+const { closeSidebar } = sidebarStore
 const { openModalAlert } = alertStore
 const { boardList, getBoardList, getSelected } = storeToRefs(boardStore)
 
@@ -28,7 +28,7 @@ function isSelected(idx: number) {
  */
 function selectBoard(idx: number, close = true) {
   if (isMobile.value && close)
-    toggleSidebar(false)
+    closeSidebar()
 
   updateSelected({ boardIdx: idx })
 }
@@ -38,7 +38,7 @@ function selectBoard(idx: number, close = true) {
  */
 function createBoard() {
   if (isMobile.value)
-    toggleSidebar(false)
+    closeSidebar()
 
   openModalBoard('create')
 }
@@ -48,7 +48,7 @@ function createBoard() {
  */
 function resetData() {
   if (isMobile.value)
-    toggleSidebar(false)
+    closeSidebar()
 
   openModalAlert('reset', 'All')
 }
