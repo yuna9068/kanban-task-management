@@ -21,7 +21,7 @@ export const useTaskStore = defineStore('task', () => {
   const getEmptyTask = computed(() => ({
     title: '',
     description: '',
-    status: getBoardColumnsNameList.value[0],
+    status: getBoardColumnsNameList.value ? getBoardColumnsNameList.value[0] : '',
     subtasks: [
       {
         title: '',
@@ -35,7 +35,7 @@ export const useTaskStore = defineStore('task', () => {
   }))
   const getTask = computed(() =>
     (
-      getBoard.value.columns[getSelected.value.columnIdx]?.tasks[getSelected.value.taskIdx]
+      getBoard.value?.columns[getSelected.value.columnIdx]?.tasks[getSelected.value.taskIdx]
       ?? getEmptyTask.value
     ),
   )
@@ -126,7 +126,7 @@ export const useTaskStore = defineStore('task', () => {
   function validateTaskTitle(inputValue: string, edit = true): ValidateResult {
     const sourceTitle = getTask.value.title
     let taskTitleList: string[] = []
-    getBoard.value.columns.forEach((column) => {
+    getBoard.value?.columns.forEach((column) => {
       const titleList = column.tasks.map(task => task.title)
       taskTitleList.push(...titleList)
     })

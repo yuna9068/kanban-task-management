@@ -12,7 +12,7 @@ const { setBoardData, closeModalBoard } = boardStore
 const { closeSidebar } = sidebarStore
 const { closeModalTaskDetail, closeModalTaskEdit } = taskStore
 const { openModalAlert } = alertStore
-const { getIsLoading, getModalBoardInfo } = storeToRefs(boardStore)
+const { getIsLoading, getModalBoardInfo, getBoardList } = storeToRefs(boardStore)
 const { getModalTaskDetail, getModalTaskEdit } = storeToRefs(taskStore)
 
 const storage = useLocalStorage('board', [...initialData.boards])
@@ -102,11 +102,13 @@ onBeforeRouteLeave((to) => {
     <BoardLoading v-if="getIsLoading" />
     <main v-else class="main">
       <SidebarIndex />
-      <BoardIndex class="main-board" />
+
+      <BoardIndex v-if="getBoardList.length" class="main-board" />
+      <BoardEmpty v-else class="main-board" />
     </main>
     <BoardModal />
-    <TaskEditModal />
-    <TaskDetailModal />
+    <TaskEditModal v-if="getBoardList.length" />
+    <TaskDetailModal v-if="getBoardList.length" />
     <BaseModalAlert />
   </div>
 </template>

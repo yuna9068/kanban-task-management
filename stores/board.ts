@@ -34,7 +34,7 @@ export const useBoardStore = defineStore('board', () => {
   }))
   const getBoardList = computed(() => boardList.value)
   const getBoard = computed(() => boardList.value[selected.value.boardIdx])
-  const getBoardColumnsNameList = computed(() => getBoard.value.columns.map(item => item.name))
+  const getBoardColumnsNameList = computed(() => getBoard.value?.columns.map(item => item.name))
   const getModalBoardInfo = computed(() => modal.value)
   const getSelected = computed(() => selected.value)
 
@@ -48,7 +48,7 @@ export const useBoardStore = defineStore('board', () => {
   function updateSelected({ boardIdx, columnIdx, taskIdx }: { boardIdx?: number; columnIdx?: number; taskIdx?: number }) {
     if (typeof boardIdx === 'number') {
       selected.value.boardIdx = boardIdx
-      selected.value.boardName = getBoard.value.name
+      selected.value.boardName = getBoard.value?.name ?? ''
     }
 
     if (typeof columnIdx === 'number')
@@ -107,6 +107,9 @@ export const useBoardStore = defineStore('board', () => {
     if (!getBoard.value)
       selectedBoardIdx = boardList.value.length - 1
 
+    if (selectedBoardIdx < 0)
+      selectedBoardIdx = 0
+
     updateSelected({ boardIdx: selectedBoardIdx })
   }
 
@@ -150,7 +153,7 @@ export const useBoardStore = defineStore('board', () => {
    *          msg 訊息
    */
   function validateBoardName(inputValue: string, edit = true): ValidateResult {
-    const sourceName = getBoard.value.name
+    const sourceName = getBoard.value?.name
     let boardNameList = getBoardList.value.map(board => board.name)
 
     if (edit)

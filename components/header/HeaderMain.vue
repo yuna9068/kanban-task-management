@@ -31,7 +31,7 @@ const title = computed(() => {
 const showFunctionBtn = computed(() => isIndex.value && getBoard.value?.name)
 
 const disabledFunctionBtn = computed(() => isMobile.value && getSidebarDisplay.value)
-const disabledAddNewTaskBtn = computed(() => !getBoard.value.columns.length)
+const disabledAddNewTaskBtn = computed(() => !getBoard.value?.columns.length)
 
 const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
   () => {
