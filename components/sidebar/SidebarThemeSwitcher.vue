@@ -1,14 +1,11 @@
 <script lang="ts" setup>
-import { useToggle } from '@vueuse/core'
+import { useDark, useToggle } from '@vueuse/core'
 
-const theme = ref('light')
-
-const themeToggle = useToggle(theme, {
-  truthyValue: 'light',
-  falsyValue: 'dark',
+const isDark = useDark({
+  attribute: 'data-theme',
 })
 
-watch(theme, () => document.documentElement.setAttribute('data-theme', theme.value))
+const themeToggle = useToggle(isDark)
 </script>
 
 <template>
