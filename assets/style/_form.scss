@@ -29,7 +29,12 @@
       background: var(--primary-bg);
       color: var(--text-primary-color);
       transition: border-color 0.3s;
-  
+
+      &:hover {
+        border-color: $primary;
+        cursor: pointer;
+      }
+
       &:focus-visible {
         outline: none;
       }
@@ -42,6 +47,10 @@
     &-error {
       padding-right: 8em;
       border-color: var(--alert-color);
+
+      &:hover {
+        border-color: var(--alert-color);
+      }
     }
   }
 

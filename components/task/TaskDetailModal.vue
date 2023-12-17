@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { VueDraggable } from 'vue-draggable-plus'
-import { useCloned, useToggle } from '@vueuse/core'
+import { vOnClickOutside } from '@vueuse/components'
+import { type OnClickOutsideOptions, useCloned, useToggle } from '@vueuse/core'
 
 const boardStore = useBoardStore()
 const taskStore = useTaskStore()
@@ -15,6 +16,7 @@ const { openModalAlert } = alertStore
 const { getBoardColumnsNameList } = storeToRefs(boardStore)
 const { getTask, getModalTaskDetail } = storeToRefs(taskStore)
 
+const elHeaderFunctionBtn = ref()
 const menuDisplay = ref(false)
 
 const { cloned: task } = useCloned(getTask)
@@ -31,6 +33,13 @@ const subtasksLabel = computed(() => {
 
   return result
 })
+
+const onClickOutsideHandler: [(evt: any) => void, OnClickOutsideOptions] = [
+  () => {
+    toggleMenu(false)
+  },
+  { ignore: [elHeaderFunctionBtn] },
+]
 
 /**
  * 關閉任務詳情 Modal 和 關閉操作看板下拉式選單，並更新任務詳情
@@ -73,6 +82,7 @@ function openAlert() {
     <template #header>
       <div class="header-function">
         <button
+          ref="elHeaderFunctionBtn"
           class="header-function-btn btn-ellipsis"
           @click="toggleMenu()"
         >
@@ -81,6 +91,7 @@ function openAlert() {
 
         <div class="header-function-menu">
           <BaseDropdown
+            v-on-click-outside="onClickOutsideHandler"
             class="header-function-menu-dropdown"
             :display="menuDisplay"
           >

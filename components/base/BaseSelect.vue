@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useToggle, useVModels } from '@vueuse/core'
+import { vOnClickOutside } from '@vueuse/components'
 
 interface Props {
   modelValue: string
@@ -21,22 +22,36 @@ const menuDisplay = ref(false)
 const toggleMenu = useToggle(menuDisplay)
 
 /**
+ * 關閉下拉式選單
+ */
+function closeMenu() {
+  toggleMenu(false)
+}
+
+/**
  * 選擇項目，並關閉下拉式選單
  * @param name 項目名稱
  */
 function selectItem(name: string) {
   modelValue.value = name
-  toggleMenu(false)
+  closeMenu()
 }
 </script>
 
 <template>
-  <div class="form-item-value">
+  <div
+    v-on-click-outside="closeMenu"
+    class="form-item-value"
+  >
     <p
       class="form-item-value-input"
       @click="toggleMenu()"
     >
-      {{ modelValue || placeholder }}
+      <span class="form-item-value-input-text">{{ modelValue || placeholder }}</span>
+      <SvgoIconChevronDown
+        class="form-item-value-input-icon btn-arrow"
+        :class="{ 'btn-arrow-up': menuDisplay }"
+      />
     </p>
 
     <BaseDropdown
@@ -57,7 +72,22 @@ function selectItem(name: string) {
 
 <style lang="scss" scoped>
 .form-item-value-input {
+  width: 100%;
+  display: flex;
+  align-items: center;
   cursor: pointer;
+
+  &-text {
+    flex: 1;
+    word-break: break-word;
+  }
+
+  &-icon {
+    flex-shrink: 0;
+    width: 9.397px;
+    height: 4.698px;
+    margin-left: auto;
+  }
 }
 
 .menu {

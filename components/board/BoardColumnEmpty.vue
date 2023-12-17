@@ -23,7 +23,6 @@ const { addNewColumn } = boardStore
   place-content: center;
   justify-items: center;
   height: 100%;
-  padding-inline: 24px;
 
   &-title {
     margin-bottom: 24px;

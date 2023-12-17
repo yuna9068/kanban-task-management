@@ -54,6 +54,10 @@ const themeToggle = useToggle(isDark)
     background: $primary;
     text-align: left;
 
+    &:hover {
+      background: $primary-light;
+    }
+
     &::before {
       $btn-circle-size: 14px;
 

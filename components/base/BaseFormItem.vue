@@ -40,7 +40,7 @@ const emits = defineEmits([
 
 const { single, column, textarea, select, subtask } = useVModels(props, emits)
 
-const renderTag = computed(() => (props.type === 'select' || props.type === 'checkbox') ? 'div' : 'label')
+const renderTag = computed(() => (props.type === 'single' || props.type === 'textarea') ? 'label' : 'div')
 
 /**
  * 判斷要渲染哪種元件，需類型相符且有值

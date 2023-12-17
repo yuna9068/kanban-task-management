@@ -154,6 +154,7 @@ function showFullColumnName(state: boolean) {
       color: var(--primary-bg);
       box-shadow: 0px 4px 6px 0px rgba(54, 78, 126, 0.10);
       filter: saturate(1.2);
+      word-break: break-word;
       z-index: -1;
       translate: 0 20px;
       opacity: 0;
@@ -175,6 +176,10 @@ function showFullColumnName(state: boolean) {
     height: calc(100% - $title-height);
     border-radius: 6px;
     background: linear-gradient(180deg, #E9EFFA 0%, rgba(233, 239, 250, 0.5) 100%);
+
+    @at-root [data-theme="dark"] & {
+      background: linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.13) 100%);
+    }
     cursor: pointer;
 
     &:hover &-text {
