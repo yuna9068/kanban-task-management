@@ -44,15 +44,15 @@ function createBoard() {
 }
 
 /**
- * 使用者點擊 "Reset Board Data" 後開啟警告 Modal
+ * 使用者點擊 "Reset All Data" 後開啟警告 Modal
  */
 function resetData() {
   if (isMobile.value)
     closeSidebar()
 
   openModalAlert({
-    title: 'Reset Board Data',
-    content: 'Are you sure you want to reset board data? This action cannot be reversed.',
+    title: 'Reset All Data',
+    content: 'Are you sure you want to reset all data? This action cannot be reversed.',
     destructiveText: 'Reset',
     onDestructive: resetBoard,
   })
@@ -109,7 +109,7 @@ function dragUpdate() {
         <li class="board-item">
           <button class="board-btn btn-lg btn-destructive" @click="resetData()">
             <SvgoIconBoard class="board-btn-icon" />
-            <span class="board-btn-text">Reset Board Data</span>
+            <span class="board-btn-text">Reset All Data</span>
           </button>
         </li>
       </VueDraggable>
