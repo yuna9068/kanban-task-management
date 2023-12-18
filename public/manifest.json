@@ -1,0 +1,41 @@
+{
+  "name": "Kanban task management",
+  "short_name": "Kanban",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "orientation": "portrait-primary",
+  "description": "This is a solution to the Kanban task management web app challenge on Frontend Mentor.",
+  "dir": "ltr",
+  "lang": "en",
+  "screenshots": [
+    {
+      "src": "./screenshot/index-light.png",
+      "form_factor": "wide",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "label": "Index"
+    },
+    {
+      "src": "./screenshot/index-light-mobile.png",
+      "form_factor": "narrow",
+      "sizes": "570x1201",
+      "type": "image/png",
+      "label": "Index"
+    }
+  ]
+
+}
