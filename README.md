@@ -16,7 +16,7 @@
 
 ![Index](./docs/screenshot/iMacAndPixel4xl.webp)
 
-<p align="center">English | <a href="">中文</a></p>
+<p align="center"><a href="https://yuna9068.github.io/kanban-task-management/about">中文</a></p>
 
 
 ## Table of contents
