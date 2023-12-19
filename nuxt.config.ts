@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -31,6 +33,8 @@ export default defineNuxtConfig({
     },
   },
   app: {
+    baseURL: process.env.NODE_ENV === 'production' ? '/kanban-task-management/' : '/',
+    buildAssetsDir: process.env.NODE_ENV === 'production' ? '/assets/' : '/_nuxt/',
     head: {
       link: [
         {
