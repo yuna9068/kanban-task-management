@@ -36,7 +36,7 @@ export default defineNuxtConfig({
   },
   app: {
     baseURL: path,
-    buildAssetsDir: '/assets/',
+    buildAssetsDir: '/static/',
     head: {
       htmlAttrs: {
         lang: 'en',
