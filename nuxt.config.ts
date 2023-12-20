@@ -38,6 +38,9 @@ export default defineNuxtConfig({
     baseURL: path,
     buildAssetsDir: '/assets/',
     head: {
+      htmlAttrs: {
+        lang: 'en',
+      },
       link: [
         {
           rel: 'icon',
@@ -65,6 +68,10 @@ export default defineNuxtConfig({
           rel: 'manifest',
           href: 'manifest.json',
         },
+        {
+          rel: 'canonical',
+          href: 'https://yuna9068.github.io/kanban-task-management/',
+        },
       ],
       meta: [
         {
@@ -76,6 +83,30 @@ export default defineNuxtConfig({
           name: 'theme-color',
           media: '(prefers-color-scheme: dark)',
           content: '#2B2C37',
+        },
+        {
+          name: 'description',
+          content: 'This is a solution to the Kanban task management web app challenge on Frontend Mentor.',
+        },
+        {
+          name: 'keywords',
+          content: 'Kanban, Task, Management, Frontend Mentor',
+        },
+        {
+          property: 'og:type',
+          content: 'website',
+        },
+        {
+          property: 'og:description',
+          content: 'This is a solution to the Kanban task management web app challenge on Frontend Mentor.',
+        },
+        {
+          property: 'og:image',
+          content: 'https://raw.githubusercontent.com/yuna9068/kanban-task-management/main/docs/screenshot/index-light.png',
+        },
+        {
+          property: 'og:url',
+          content: 'https://yuna9068.github.io/kanban-task-management/',
         },
       ],
     },

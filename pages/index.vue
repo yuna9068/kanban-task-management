@@ -12,7 +12,12 @@ const { setBoardData, closeModalBoard } = boardStore
 const { closeSidebar } = sidebarStore
 const { closeModalTaskDetail, closeModalTaskEdit } = taskStore
 const { openModalAlert } = alertStore
-const { getIsLoading, getModalBoardInfo, getBoardList } = storeToRefs(boardStore)
+const {
+  getIsLoading,
+  getModalBoardInfo,
+  getBoardList,
+  getBoard,
+} = storeToRefs(boardStore)
 const { getModalTaskDetail, getModalTaskEdit } = storeToRefs(taskStore)
 
 const storage = useLocalStorage('board', [...initialData.boards])
@@ -25,6 +30,11 @@ const isEditing = computed(() => (
   || getModalTaskDetail.value.display
   || getModalTaskEdit.value.display
 ))
+
+useSeoMeta({
+  title: () => getBoard.value?.name,
+  ogTitle: 'Index',
+})
 
 boardStore.$subscribe((mutate, state) => {
   storage.value = state.boardList

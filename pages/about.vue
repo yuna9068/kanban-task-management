@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+useSeoMeta({
+  title: 'About',
+  ogTitle: 'About',
+})
+
 const features = [
   { title: 'Responsive web design - 依據裝置螢幕尺寸顯示最佳佈局' },
   { title: '查看頁面上所有互動元素的 Hover 狀態' },

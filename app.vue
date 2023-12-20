@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+useSeoMeta({
+  titleTemplate: title => title ? `${title} - Kanban task management` : 'Kanban task management',
+})
 </script>
 
 <template>
