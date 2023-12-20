@@ -65,20 +65,21 @@ function showFullColumnName(state: boolean) {
 <template>
   <section class="column">
     <h4 class="column-title heading-s">
-      <p
-        v-if="!create"
-        v-element-hover="showFullColumnName"
-        class="column-title-text"
-      >
-        {{ modelValue.name }}({{ modelValue.tasks?.length }})
-      </p>
+      <template v-if="!create">
+        <p
+          v-element-hover="showFullColumnName"
+          class="column-title-text"
+        >
+          {{ modelValue.name }}({{ modelValue.tasks?.length }})
+        </p>
 
-      <p
-        class="column-title-popover"
-        :class="{ 'column-title-popover--active': displayFullName }"
-      >
-        {{ modelValue.name }}
-      </p>
+        <p
+          class="column-title-popover"
+          :class="{ 'column-title-popover--active': displayFullName }"
+        >
+          {{ modelValue.name }}
+        </p>
+      </template>
     </h4>
 
     <button

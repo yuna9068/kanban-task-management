@@ -7,6 +7,9 @@ const { getSidebarDisplay } = storeToRefs(sidebarStore)
 <template>
   <section class="section section-switcher sr-only-mobile">
     <div class="section-container">
+      <h2 class="sr-only">
+        Sidebar Switcher
+      </h2>
       <button
         v-show="getSidebarDisplay"
         class="switcher-hide-btn btn-lg btn-sidebar-board"

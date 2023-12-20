@@ -4,6 +4,9 @@
 <template>
   <section class="section section-link">
     <div class="section-container">
+      <h2 class="sr-only">
+        Sitemap
+      </h2>
       <NuxtLink to="/about" class="link">
         About kanban
       </NuxtLink>

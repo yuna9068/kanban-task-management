@@ -11,6 +11,9 @@ const themeToggle = useToggle(isDark)
 <template>
   <section class="section section-theme">
     <div class="section-container">
+      <h2 class="sr-only">
+        Theme Switcher
+      </h2>
       <div class="switcher">
         <SvgoIconLightTheme class="switcher-theme-icon" />
         <button class="switcher-btn" @click="themeToggle()" />
