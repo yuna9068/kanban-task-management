@@ -84,6 +84,7 @@ function openAlert() {
         <button
           ref="elHeaderFunctionBtn"
           class="header-function-btn btn-ellipsis"
+          aria-label="Toggle Task Menu"
           @click="toggleMenu()"
         >
           <SvgoIconVerticalEllipsis class="btn-ellipsis-icon" />

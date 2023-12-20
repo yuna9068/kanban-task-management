@@ -25,6 +25,9 @@ const { getSidebarDisplay } = storeToRefs(sidebarStore)
         @click="toggleSidebar(true)"
       >
         <SvgoIconShowSidebar class="switcher-show-btn-icon" />
+        <p class="sr-only">
+          Show Sidebar
+        </p>
       </button>
     </div>
   </section>

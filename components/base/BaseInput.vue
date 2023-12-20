@@ -77,7 +77,12 @@ watch(
     <p v-show="!validateResult.status" class="form-item-error text-alert" :class="{ 'form-item-error-delete': deletable }">
       {{ validateResult.msg }}
     </p>
-    <button v-if="deletable" class="btn-delete" @click="$emit('remove')">
+    <button
+      v-if="deletable"
+      class="btn-delete"
+      aria-label="Delete"
+      @click="$emit('remove')"
+    >
       <SvgoIconCross class="btn-delete-icon" />
     </button>
   </div>

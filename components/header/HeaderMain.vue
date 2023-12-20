@@ -89,6 +89,7 @@ function openAlert() {
         v-show="showFunctionBtn"
         class="title-btn btn-arrow"
         :class="{ 'btn-arrow-up': getSidebarDisplay }"
+        aria-label="Toggle Sidebar"
       >
         <SvgoIconChevronDown />
       </button>
@@ -108,6 +109,7 @@ function openAlert() {
         ref="elFunctionMenuBtn"
         class="function-menu-btn btn-ellipsis"
         :disabled="disabledFunctionBtn"
+        aria-label="Toggle Board Menu"
         @click="toggleMenu()"
       >
         <SvgoIconVerticalEllipsis class="function-menu-btn-icon" />

@@ -16,7 +16,11 @@ const themeToggle = useToggle(isDark)
       </h2>
       <div class="switcher">
         <SvgoIconLightTheme class="switcher-theme-icon" />
-        <button class="switcher-btn" @click="themeToggle()" />
+        <button
+          class="switcher-btn"
+          aria-label="Toggle Theme"
+          @click="themeToggle()"
+        />
         <SvgoIconDarkTheme class="switcher-theme-icon" />
       </div>
     </div>
