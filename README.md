@@ -10,7 +10,7 @@
     <p>
         <a href="https://yuna9068.github.io/kanban-task-management/">Github Live Site URL</a>
         ·
-        <a href="https://www.frontendmentor.io/solutions/">Frontend Mentor Solution URL</a>
+        <a href="https://www.frontendmentor.io/solutions/kanban-task-management-web-app-hfdpjV9nYs">Frontend Mentor Solution URL</a>
     </p>
 </div>
 
