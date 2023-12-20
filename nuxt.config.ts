@@ -1,6 +1,6 @@
 import process from 'node:process'
 
-const path = process.env.NODE_ENV === 'development' ? '/' : '/nuxt3-playground/'
+const path = process.env.NODE_ENV === 'development' ? '/' : '/kanban-task-management/'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
