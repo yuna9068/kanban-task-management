@@ -19,6 +19,7 @@
 .link {
   @include text-l;
 
+  display: inline-block;
   color: $primary;
   font-weight: 700;
 
