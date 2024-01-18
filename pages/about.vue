@@ -30,7 +30,7 @@ const built = [
   { name: 'Vue Router 4', desc: 'Vue.js 的官方路由', link: 'https://router.vuejs.org' },
   { name: 'Pinia 2', desc: 'Vue.js 狀態管理庫', link: 'https://pinia.vuejs.org' },
   { name: 'Nuxt 3', desc: 'Vue 框架', link: 'https://nuxt.com' },
-  { name: 'SASS', desc: 'CSS 擴展語言', link: 'https://sass-lang.com' },
+  { name: 'SCSS', desc: 'CSS 擴展語言', link: 'https://sass-lang.com' },
   { name: 'VueUse', desc: 'Vue 组合式 API 工具合集', link: 'https://vueuse.org' },
   { name: 'VueDraggablePlus', desc: '拖曳組件', link: 'https://alfred-skyblue.github.io/vue-draggable-plus' },
   { name: 'nuxt-svgo', desc: 'Nuxt 模組 - SVG 檔案', link: 'https://github.com/cpsoinos/nuxt-svgo' },

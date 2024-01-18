@@ -127,7 +127,7 @@
 * [Vue Router 4](https://router.vuejs.org): Official router for Vue
 * [Pinia 2](https://pinia.vuejs.org): Store library for Vue
 * [Nuxt 3](https://nuxt.com): Vue Framework
-* [SASS](https://sass-lang.com): CSS extension language
+* [SCSS](https://sass-lang.com): CSS extension language
 * [VueUse](https://vueuse.org): Collection of Vue Composition Utilities
 * [VueDraggablePlus](https://alfred-skyblue.github.io/vue-draggable-plus): Drag and drop components
 * [nuxt-svgo](https://github.com/cpsoinos/nuxt-svgo): Nuxt module to load optimized SVG files as Vue components
